@@ -23,21 +23,21 @@ const Gallery = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading gallery...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-600 text-xl">Loading gallery...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-20">
+    <div className="min-h-screen bg-white py-16">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Photo Gallery
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Take a glimpse into life at Excel Institute. From interactive classrooms to 
             project presentations, see what makes our learning community special.
           </p>
@@ -49,10 +49,10 @@ const Gallery = () => {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 capitalize ${
+              className={`px-6 py-3 rounded-full font-medium transition-all capitalize ${
                 selectedCategory === category
-                  ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg'
-                  : 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {category}
@@ -65,18 +65,18 @@ const Gallery = () => {
           {filteredPhotos?.map((photo) => (
             <div 
               key={photo.id} 
-              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-slate-700 hover:border-purple-500"
+              className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow"
             >
               <img
                 src={photo.photo_url}
-                alt={photo.caption}
-                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                alt={photo.caption || 'Gallery photo'}
+                className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-white font-medium mb-2">{photo.caption}</p>
                   {photo.category && (
-                    <span className="inline-block px-3 py-1 bg-purple-600 text-white text-xs rounded-full capitalize">
+                    <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs rounded-full capitalize">
                       {photo.category}
                     </span>
                   )}
@@ -87,26 +87,26 @@ const Gallery = () => {
         </div>
 
         {/* Statistics Section */}
-        <div className="mt-20 bg-slate-800/50 backdrop-blur-lg rounded-2xl p-8 border border-slate-700">
+        <div className="mt-20 bg-gray-50 rounded-2xl p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-4">By the Numbers</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">By the Numbers</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-400 mb-2">3</div>
-              <div className="text-slate-300">Modern Classrooms</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">3</div>
+              <div className="text-gray-600">Modern Classrooms</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-cyan-400 mb-2">25+</div>
-              <div className="text-slate-300">Events Per Year</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">25+</div>
+              <div className="text-gray-600">Events Per Year</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-400 mb-2">100+</div>
-              <div className="text-slate-300">Students Per Year</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">100+</div>
+              <div className="text-gray-600">Students Per Year</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-pink-400 mb-2">10+</div>
-              <div className="text-slate-300">Industry Partners</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">10+</div>
+              <div className="text-gray-600">Industry Partners</div>
             </div>
           </div>
         </div>

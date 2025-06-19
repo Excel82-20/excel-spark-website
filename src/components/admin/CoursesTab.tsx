@@ -5,13 +5,32 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+
+interface Course {
+  id: string;
+  title: string;
+  duration: string;
+  category: string;
+  description: string;
+  highlights: string[];
+  image_url: string | null;
+}
+
+interface FormData {
+  title: string;
+  duration: string;
+  category: string;
+  description: string;
+  highlights: string;
+  image_url: string;
+}
 
 const CoursesTab = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingCourse, setEditingCourse] = useState(null);
-  const [formData, setFormData] = useState({
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [formData, setFormData] = useState<FormData>({
     title: '',
     duration: '',
     category: '',
@@ -19,70 +38,86 @@ const CoursesTab = () => {
     highlights: '',
     image_url: ''
   });
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { data: courses, isLoading } = useQuery({
-    queryKey: ['admin-courses'],
+    queryKey: ['courses'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('courses').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('courses').select('*');
       if (error) throw error;
-      return data;
+      return data as Course[];
     },
   });
 
-  const addCourseMutation = useMutation({
-    mutationFn: async (courseData) => {
+  const createMutation = useMutation({
+    mutationFn: async (data: Omit<Course, 'id'>) => {
       const { error } = await supabase.from('courses').insert([{
-        ...courseData,
-        highlights: courseData.highlights.split(',').map(h => h.trim())
+        ...data,
+        highlights: data.highlights
       }]);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
-      toast({ title: "Course added successfully!" });
-      resetForm();
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      toast({ title: 'Course created successfully!' });
+      handleCloseDialog();
     },
+    onError: (error) => {
+      toast({ title: 'Error creating course', description: error.message, variant: 'destructive' });
+    }
   });
 
-  const updateCourseMutation = useMutation({
-    mutationFn: async ({ id, ...courseData }) => {
-      const { error } = await supabase.from('courses').update({
-        ...courseData,
-        highlights: courseData.highlights.split(',').map(h => h.trim())
-      }).eq('id', id);
+  const updateMutation = useMutation({
+    mutationFn: async (data: Course) => {
+      const { id, ...updateData } = data;
+      const { error } = await supabase.from('courses').update(updateData).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
-      toast({ title: "Course updated successfully!" });
-      resetForm();
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      toast({ title: 'Course updated successfully!' });
+      handleCloseDialog();
     },
+    onError: (error) => {
+      toast({ title: 'Error updating course', description: error.message, variant: 'destructive' });
+    }
   });
 
-  const deleteCourseMutation = useMutation({
-    mutationFn: async (id) => {
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
       const { error } = await supabase.from('courses').delete().eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
-      toast({ title: "Course deleted successfully!" });
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      toast({ title: 'Course deleted successfully!' });
     },
+    onError: (error) => {
+      toast({ title: 'Error deleting course', description: error.message, variant: 'destructive' });
+    }
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const courseData = {
+      title: formData.title,
+      duration: formData.duration,
+      category: formData.category,
+      description: formData.description,
+      highlights: formData.highlights.split(',').map(h => h.trim()),
+      image_url: formData.image_url
+    };
+
     if (editingCourse) {
-      updateCourseMutation.mutate({ id: editingCourse.id, ...formData });
+      updateMutation.mutate({ ...courseData, id: editingCourse.id });
     } else {
-      addCourseMutation.mutate(formData);
+      createMutation.mutate(courseData);
     }
   };
 
-  const handleEdit = (course) => {
+  const handleEdit = (course: Course) => {
     setEditingCourse(course);
     setFormData({
       title: course.title,
@@ -92,10 +127,18 @@ const CoursesTab = () => {
       highlights: course.highlights.join(', '),
       image_url: course.image_url || ''
     });
-    setIsEditing(true);
+    setIsDialogOpen(true);
   };
 
-  const resetForm = () => {
+  const handleDelete = (id: string) => {
+    if (window.confirm('Are you sure you want to delete this course?')) {
+      deleteMutation.mutate(id);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setEditingCourse(null);
     setFormData({
       title: '',
       duration: '',
@@ -104,120 +147,106 @@ const CoursesTab = () => {
       highlights: '',
       image_url: ''
     });
-    setIsEditing(false);
-    setEditingCourse(null);
   };
 
-  if (isLoading) {
-    return <div className="text-white">Loading courses...</div>;
-  }
+  if (isLoading) return <div>Loading courses...</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Manage Courses</h2>
-        <Button
-          onClick={() => setIsEditing(true)}
-          className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Course
-        </Button>
-      </div>
-
-      {isEditing && (
-        <div className="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
-          <h3 className="text-xl font-bold text-white mb-4">
-            {editingCourse ? 'Edit Course' : 'Add New Course'}
-          </h3>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-purple-600 hover:bg-purple-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Course
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-slate-800 border-slate-700">
+            <DialogHeader>
+              <DialogTitle className="text-white">
+                {editingCourse ? 'Edit Course' : 'Add New Course'}
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 placeholder="Course Title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="bg-slate-600 border-slate-500 text-white"
+                className="bg-slate-700 border-slate-600 text-white"
                 required
               />
               <Input
                 placeholder="Duration (e.g., 8 weeks)"
                 value={formData.duration}
                 onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                className="bg-slate-600 border-slate-500 text-white"
+                className="bg-slate-700 border-slate-600 text-white"
                 required
               />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 placeholder="Category"
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="bg-slate-600 border-slate-500 text-white"
+                className="bg-slate-700 border-slate-600 text-white"
+                required
+              />
+              <Textarea
+                placeholder="Description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="bg-slate-700 border-slate-600 text-white"
+                required
+              />
+              <Input
+                placeholder="Highlights (comma-separated)"
+                value={formData.highlights}
+                onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
+                className="bg-slate-700 border-slate-600 text-white"
                 required
               />
               <Input
                 placeholder="Image URL"
                 value={formData.image_url}
                 onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                className="bg-slate-600 border-slate-500 text-white"
+                className="bg-slate-700 border-slate-600 text-white"
               />
-            </div>
-            <Textarea
-              placeholder="Course Description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="bg-slate-600 border-slate-500 text-white"
-              required
-            />
-            <Input
-              placeholder="Highlights (comma-separated)"
-              value={formData.highlights}
-              onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
-              className="bg-slate-600 border-slate-500 text-white"
-              required
-            />
-            <div className="flex gap-2">
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                {editingCourse ? 'Update' : 'Add'} Course
-              </Button>
-              <Button type="button" onClick={resetForm} variant="outline">
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
-      )}
+              <div className="flex gap-2">
+                <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
+                  {editingCourse ? 'Update' : 'Create'}
+                </Button>
+                <Button type="button" variant="outline" onClick={handleCloseDialog}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid gap-4">
         {courses?.map((course) => (
-          <div key={course.id} className="bg-slate-700/50 rounded-xl p-4 border border-slate-600">
-            {course.image_url && (
-              <img
-                src={course.image_url}
-                alt={course.title}
-                className="w-full h-32 object-cover rounded-lg mb-4"
-              />
-            )}
-            <h3 className="text-lg font-bold text-white mb-2">{course.title}</h3>
-            <p className="text-purple-400 text-sm mb-2">{course.category} • {course.duration}</p>
-            <p className="text-slate-300 text-sm mb-4 line-clamp-2">{course.description}</p>
+          <div key={course.id} className="bg-slate-700/50 rounded-lg p-4 flex justify-between items-start">
+            <div className="flex-1">
+              <h3 className="font-semibold text-white">{course.title}</h3>
+              <p className="text-slate-300 text-sm">{course.category} • {course.duration}</p>
+              <p className="text-slate-400 text-sm mt-2">{course.description}</p>
+            </div>
             <div className="flex gap-2">
               <Button
                 size="sm"
+                variant="outline"
                 onClick={() => handleEdit(course)}
-                className="bg-blue-600 hover:bg-blue-700 flex-1"
+                className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white"
               >
-                <Edit2 className="w-4 h-4 mr-1" />
-                Edit
+                <Edit className="w-4 h-4" />
               </Button>
               <Button
                 size="sm"
-                onClick={() => deleteCourseMutation.mutate(course.id)}
-                variant="destructive"
-                className="flex-1"
+                variant="outline"
+                onClick={() => handleDelete(course.id)}
+                className="text-red-400 border-red-400 hover:bg-red-400 hover:text-white"
               >
-                <Trash2 className="w-4 h-4 mr-1" />
-                Delete
+                <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           </div>

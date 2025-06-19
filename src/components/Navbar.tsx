@@ -20,7 +20,7 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="bg-white shadow-sm fixed w-full top-0 z-50">
+    <nav className="bg-white shadow-sm fixed w-full top-0 z-50 border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
@@ -41,7 +41,7 @@ const Navbar = () => {
               >
                 {item.name}
                 {isActive(item.path) && (
-                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 rounded-full"></div>
+                  <div className="absolute -bottom-4 left-0 w-full h-0.5 bg-blue-600 rounded-full"></div>
                 )}
               </Link>
             ))}
