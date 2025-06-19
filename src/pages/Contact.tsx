@@ -1,213 +1,171 @@
 
-import React, { useState } from 'react';
+import React from 'react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Clock, Users } from 'lucide-react';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    interest: '',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to your backend/Supabase
-    alert('Thank you for your interest! We will contact you soon.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      interest: '',
-      message: ''
-    });
-  };
-
   return (
-    <div className="py-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">Get in Touch</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to start your journey or have questions about our programs? 
-            We're here to help you take the next step toward your career goals.
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+            Contact Us
+          </h1>
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+            Feel free to drop by, call, or DM us! We'd love to hear from you and help you start your learning journey.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="Your full name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="(555) 123-4567"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="interest" className="block text-sm font-medium text-gray-700 mb-2">
-                  Course of Interest
-                </label>
-                <select
-                  id="interest"
-                  name="interest"
-                  value={formData.interest}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                >
-                  <option value="">Select a course</option>
-                  <option value="data-analytics">Data Analytics Mastery</option>
-                  <option value="digital-marketing">Digital Marketing Pro</option>
-                  <option value="web-development">Web Development Basics</option>
-                  <option value="business-intelligence">Business Intelligence</option>
-                  <option value="social-media">Social Media Marketing</option>
-                  <option value="project-management">Project Management Essentials</option>
-                  <option value="other">Other / General Inquiry</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-                  placeholder="Tell us about your goals and how we can help..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:scale-105"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-
           {/* Contact Information */}
           <div className="space-y-8">
-            <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-xl p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
+            <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-8 border border-slate-700">
+              <h2 className="text-2xl font-bold text-white mb-6">Get In Touch</h2>
               
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-blue-600">📍</span>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Address</h3>
-                    <p className="text-gray-600">123 Learning Street<br />Education District<br />City, State 12345</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Visit Us</h3>
+                    <p className="text-slate-300">Excel Institute</p>
+                    <p className="text-slate-300">Prayagpokhari, Lagankhel</p>
+                    <p className="text-slate-300">Lalitpur, Nepal</p>
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-green-600">📞</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Phone</h3>
-                    <p className="text-gray-600">(555) 123-4567</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Call Us</h3>
+                    <p className="text-slate-300">+977-1-5555555</p>
+                    <p className="text-slate-300">+977-9801234567</p>
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-yellow-600">✉️</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Email</h3>
-                    <p className="text-gray-600">info@excelinstitute.com</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Email Us</h3>
+                    <p className="text-slate-300">info@excelinstitute.com</p>
+                    <p className="text-slate-300">admission@excelinstitute.com</p>
                   </div>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-4 mt-1">
-                    <span className="text-purple-600">🕒</span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Office Hours</h3>
-                    <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM<br />Saturday: 10:00 AM - 2:00 PM</p>
+                    <h3 className="text-lg font-semibold text-white mb-1">Office Hours</h3>
+                    <p className="text-slate-300">Sunday - Friday: 9:00 AM - 6:00 PM</p>
+                    <p className="text-slate-300">Saturday: 10:00 AM - 4:00 PM</p>
                   </div>
+                </div>
+              </div>
+
+              {/* Social Media */}
+              <div className="mt-8 pt-6 border-t border-slate-600">
+                <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                <div className="flex gap-4">
+                  <a 
+                    href="https://facebook.com/excelinstitute" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-700 transition-colors"
+                  >
+                    <Facebook className="w-6 h-6 text-white" />
+                  </a>
+                  <a 
+                    href="https://instagram.com/excelinstitute" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-all"
+                  >
+                    <Instagram className="w-6 h-6 text-white" />
+                  </a>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Response Promise</h3>
-              <p className="text-gray-600 mb-4">
-                We understand that choosing the right education path is important. That's why we promise to respond to all inquiries within 24 hours during business days.
-              </p>
-              <div className="flex items-center text-sm text-green-600">
-                <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                Average response time: 2-4 hours
+            {/* Quick Stats */}
+            <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border border-slate-700">
+              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Why Students Choose Us
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-400">500+</div>
+                  <div className="text-slate-300 text-sm">Students Trained</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cyan-400">95%</div>
+                  <div className="text-slate-300 text-sm">Success Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-400">5+</div>
+                  <div className="text-slate-300 text-sm">Years Experience</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-pink-400">15</div>
+                  <div className="text-slate-300 text-sm">Max Class Size</div>
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl p-8 text-white">
-              <h3 className="text-xl font-bold mb-4">Schedule a Campus Tour</h3>
-              <p className="mb-4">
-                Want to see our facilities in person? Schedule a guided tour and meet our instructors!
-              </p>
-              <button className="px-6 py-2 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
-                Book a Tour
-              </button>
+          {/* Contact Form & Map */}
+          <div className="space-y-8">
+            {/* Contact Form */}
+            <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-8 border border-slate-700">
+              <h2 className="text-2xl font-bold text-white mb-6">Send us a Message</h2>
+              <form className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+                <textarea
+                  placeholder="Your Message"
+                  rows={4}
+                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                ></textarea>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+
+            {/* Google Map */}
+            <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-2 border border-slate-700">
+              <div className="w-full h-64 bg-slate-700 rounded-xl flex items-center justify-center">
+                <div className="text-center">
+                  <MapPin className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+                  <p className="text-slate-400">Google Map Integration</p>
+                  <p className="text-slate-500 text-sm">Prayagpokhari, Lagankhel</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

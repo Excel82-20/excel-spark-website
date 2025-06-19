@@ -9,7 +9,153 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          password_hash: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          password_hash: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          password_hash?: string
+        }
+        Relationships: []
+      }
+      courses: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          duration: string
+          highlights: string[]
+          id: string
+          image_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          duration: string
+          highlights?: string[]
+          id?: string
+          image_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          duration?: string
+          highlights?: string[]
+          id?: string
+          image_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery_photos: {
+        Row: {
+          caption: string | null
+          category: string | null
+          created_at: string
+          id: string
+          photo_url: string
+          updated_at: string
+        }
+        Insert: {
+          caption?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          photo_url: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          photo_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      student_stories: {
+        Row: {
+          course_taken: string
+          created_at: string
+          id: string
+          name: string
+          photo_url: string | null
+          testimonial: string
+          updated_at: string
+        }
+        Insert: {
+          course_taken: string
+          created_at?: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          testimonial: string
+          updated_at?: string
+        }
+        Update: {
+          course_taken?: string
+          created_at?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          testimonial?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          bio: string
+          created_at: string
+          id: string
+          name: string
+          photo_url: string | null
+          role: string
+          social_links: Json | null
+          updated_at: string
+        }
+        Insert: {
+          bio: string
+          created_at?: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          role: string
+          social_links?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string
+          created_at?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          role?: string
+          social_links?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

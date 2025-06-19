@@ -13,6 +13,8 @@ import Stories from "./pages/Stories";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -22,18 +24,21 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/stories" element={<Stories />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          {/* Admin routes without layout */}
+          <Route path="/admin0417/login" element={<AdminLogin />} />
+          <Route path="/admin0417" element={<AdminDashboard />} />
+          
+          {/* Public routes with layout */}
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/about" element={<Layout><About /></Layout>} />
+          <Route path="/courses" element={<Layout><Courses /></Layout>} />
+          <Route path="/team" element={<Layout><Team /></Layout>} />
+          <Route path="/stories" element={<Layout><Stories /></Layout>} />
+          <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="*" element={<Layout><NotFound /></Layout>} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

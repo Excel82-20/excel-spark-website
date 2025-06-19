@@ -1,87 +1,45 @@
 
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'Classroom', 'Events', 'Graduation', 'Campus'];
+  const { data: photos, isLoading } = useQuery({
+    queryKey: ['gallery-photos'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('gallery_photos').select('*');
+      if (error) throw error;
+      return data;
+    },
+  });
 
-  const photos = [
-    {
-      url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop',
-      caption: 'Students collaborating on a data analytics project',
-      category: 'Classroom'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=300&fit=crop',
-      caption: 'Web development workshop in progress',
-      category: 'Classroom'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=300&fit=crop',
-      caption: 'Digital marketing strategy session',
-      category: 'Classroom'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=300&fit=crop',
-      caption: 'Annual graduation ceremony 2024',
-      category: 'Graduation'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=300&fit=crop',
-      caption: 'Proud graduates celebrating their achievements',
-      category: 'Graduation'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=300&fit=crop',
-      caption: 'Industry networking event',
-      category: 'Events'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=300&fit=crop',
-      caption: 'Guest speaker from Microsoft',
-      category: 'Events'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop',
-      caption: 'Modern classroom facilities',
-      category: 'Campus'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400&h=300&fit=crop',
-      caption: 'Student collaboration area',
-      category: 'Campus'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1559027615-cd4628902d38?w=400&h=300&fit=crop',
-      caption: 'Technology lab with latest equipment',
-      category: 'Campus'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1551135049-8a33b5883817?w=400&h=300&fit=crop',
-      caption: 'Career fair with potential employers',
-      category: 'Events'
-    },
-    {
-      url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop',
-      caption: 'Interactive coding session',
-      category: 'Classroom'
-    }
-  ];
-
+  const categories = ['All', ...new Set(photos?.map(photo => photo.category).filter(Boolean) || [])];
+  
   const filteredPhotos = selectedCategory === 'All' 
     ? photos 
-    : photos.filter(photo => photo.category === selectedCategory);
+    : photos?.filter(photo => photo.category === selectedCategory);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading gallery...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="py-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">Gallery</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+            Photo Gallery
+          </h1>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
             Take a glimpse into life at Excel Institute. From interactive classrooms to 
-            graduation celebrations, see what makes our learning community special.
+            project presentations, see what makes our learning community special.
           </p>
         </div>
 
@@ -91,10 +49,10 @@ const Gallery = () => {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-200 ${
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 capitalize ${
                 selectedCategory === category
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg'
+                  : 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600'
               }`}
             >
               {category}
@@ -104,22 +62,24 @@ const Gallery = () => {
 
         {/* Photo Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPhotos.map((photo, index) => (
+          {filteredPhotos?.map((photo) => (
             <div 
-              key={index} 
-              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              key={photo.id} 
+              className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border border-slate-700 hover:border-purple-500"
             >
               <img
-                src={photo.url}
+                src={photo.photo_url}
                 alt={photo.caption}
-                className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-white text-sm font-medium">{photo.caption}</p>
-                  <span className="inline-block mt-2 px-2 py-1 bg-blue-600 text-white text-xs rounded">
-                    {photo.category}
-                  </span>
+                  <p className="text-white font-medium mb-2">{photo.caption}</p>
+                  {photo.category && (
+                    <span className="inline-block px-3 py-1 bg-purple-600 text-white text-xs rounded-full capitalize">
+                      {photo.category}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -127,26 +87,26 @@ const Gallery = () => {
         </div>
 
         {/* Statistics Section */}
-        <div className="mt-16 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-8">
+        <div className="mt-20 bg-slate-800/50 backdrop-blur-lg rounded-2xl p-8 border border-slate-700">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">By the Numbers</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">By the Numbers</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">5</div>
-              <div className="text-gray-600">Modern Classrooms</div>
+              <div className="text-3xl font-bold text-purple-400 mb-2">3</div>
+              <div className="text-slate-300">Modern Classrooms</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">50+</div>
-              <div className="text-gray-600">Events Per Year</div>
+              <div className="text-3xl font-bold text-cyan-400 mb-2">25+</div>
+              <div className="text-slate-300">Events Per Year</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-600 mb-2">200+</div>
-              <div className="text-gray-600">Students Per Cohort</div>
+              <div className="text-3xl font-bold text-green-400 mb-2">100+</div>
+              <div className="text-slate-300">Students Per Year</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">15+</div>
-              <div className="text-gray-600">Industry Partners</div>
+              <div className="text-3xl font-bold text-pink-400 mb-2">10+</div>
+              <div className="text-slate-300">Industry Partners</div>
             </div>
           </div>
         </div>
