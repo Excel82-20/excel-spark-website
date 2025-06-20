@@ -20,10 +20,10 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="bg-white/90 backdrop-blur-lg shadow-xl fixed w-full top-0 z-50 border-b border-white/20">
-      <div className="section-container">
-        <div className="flex justify-between items-center h-20">
-          <Link to="/" className="text-3xl font-black text-gradient hover:scale-105 transition-transform">
+    <nav className="bg-white/80 backdrop-blur-lg shadow-sm fixed w-full top-0 z-50 border-b border-white/20">
+      <div className="container-custom">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="text-2xl font-bold gradient-text hover:scale-105 transition-transform">
             Excel Institute
           </Link>
 
@@ -33,19 +33,22 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`font-semibold transition-all duration-300 relative py-2 px-4 rounded-xl ${
+                className={`font-medium transition-all duration-300 relative ${
                   isActive(item.path)
-                    ? 'text-teal-600 bg-teal-50'
-                    : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+                    ? 'text-green-primary'
+                    : 'text-gray-600 hover:text-green-primary'
                 }`}
               >
                 {item.name}
+                {isActive(item.path) && (
+                  <div className="absolute -bottom-6 left-0 w-full h-0.5 gradient-bg-1 rounded-full"></div>
+                )}
               </Link>
             ))}
             
             <Link
               to="/contact"
-              className="ml-4 px-8 py-3 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-teal-700 transition-all duration-300 hover:scale-105 shadow-lg"
+              className="ml-4 px-6 py-2 gradient-bg-1 text-white font-medium rounded-xl hover:shadow-lg transition-all duration-300 hover:scale-105"
             >
               Get Started
             </Link>
@@ -54,25 +57,25 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-3 rounded-xl text-gray-700 hover:text-teal-600 hover:bg-teal-50 transition-all duration-300"
+            className="md:hidden p-2 rounded-xl text-gray-600 hover:text-green-primary hover:bg-gray-50 transition-all duration-300"
           >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden absolute top-20 left-0 right-0 bg-white/95 backdrop-blur-lg border-t shadow-2xl rounded-b-3xl">
-            <div className="px-6 py-6 space-y-2">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg border-t shadow-lg">
+            <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`block px-6 py-4 rounded-xl font-semibold transition-all duration-300 ${
+                  className={`block px-3 py-3 rounded-xl font-medium transition-all duration-300 ${
                     isActive(item.path)
-                      ? 'text-teal-600 bg-teal-50'
-                      : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+                      ? 'text-green-primary bg-mint-light/20'
+                      : 'text-gray-600 hover:text-green-primary hover:bg-gray-50'
                   }`}
                 >
                   {item.name}
@@ -81,7 +84,7 @@ const Navbar = () => {
               <Link
                 to="/contact"
                 onClick={() => setIsOpen(false)}
-                className="block mx-2 mt-6 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-bold rounded-xl text-center hover:from-blue-700 hover:to-teal-700 transition-all duration-300 shadow-lg"
+                className="block mx-3 mt-4 px-6 py-3 gradient-bg-1 text-white font-medium rounded-xl text-center hover:shadow-lg transition-all duration-300"
               >
                 Get Started
               </Link>

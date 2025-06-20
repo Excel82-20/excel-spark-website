@@ -32,75 +32,57 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-green-200/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 left-10 w-80 h-80 bg-gradient-to-br from-green-200/30 to-teal-200/30 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8 relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold gradient-text mb-2">Admin Dashboard</h1>
-            <p className="text-gray-600">Manage Excel Institute content</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
+            <p className="text-slate-300">Manage Excel Institute content</p>
           </div>
           <Button
             onClick={handleLogout}
             variant="outline"
-            className="border-2 border-green-primary text-green-primary hover:bg-green-primary hover:text-white transition-all duration-300"
+            className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
           </Button>
         </div>
 
-        <div className="floating-card p-8 border-2 border-blue-100/50">
+        <div className="bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border border-slate-700">
           <Tabs defaultValue="courses" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-100/50 rounded-2xl p-2">
-              <TabsTrigger 
-                value="courses" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:gradient-text transition-all duration-300"
-              >
+            <TabsList className="grid w-full grid-cols-4 bg-slate-700/50">
+              <TabsTrigger value="courses" className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
                 Courses
               </TabsTrigger>
-              <TabsTrigger 
-                value="team" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:gradient-text transition-all duration-300"
-              >
+              <TabsTrigger value="team" className="flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Team
               </TabsTrigger>
-              <TabsTrigger 
-                value="stories" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:gradient-text transition-all duration-300"
-              >
+              <TabsTrigger value="stories" className="flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Stories
               </TabsTrigger>
-              <TabsTrigger 
-                value="gallery" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:gradient-text transition-all duration-300"
-              >
+              <TabsTrigger value="gallery" className="flex items-center gap-2">
                 <Image className="w-4 h-4" />
                 Gallery
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="courses" className="mt-8">
+            <TabsContent value="courses" className="mt-6">
               <CoursesTab />
             </TabsContent>
 
-            <TabsContent value="team" className="mt-8">
+            <TabsContent value="team" className="mt-6">
               <TeamTab />
             </TabsContent>
 
-            <TabsContent value="stories" className="mt-8">
+            <TabsContent value="stories" className="mt-6">
               <StoriesTab />
             </TabsContent>
 
-            <TabsContent value="gallery" className="mt-8">
+            <TabsContent value="gallery" className="mt-6">
               <GalleryTab />
             </TabsContent>
           </Tabs>

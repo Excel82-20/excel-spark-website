@@ -2,10 +2,10 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
+import WhyChooseSection from '../components/WhyChooseSection';
 import CoursesSection from '../components/CoursesSection';
 import TeamSection from '../components/TeamSection';
 import TestimonialsSection from '../components/TestimonialsSection';
-import GallerySection from '../components/GallerySection';
 import ContactSection from '../components/ContactSection';
 
 const Home = () => {
@@ -13,10 +13,10 @@ const Home = () => {
     <div className="bg-white">
       <Hero />
       <AboutSection />
+      <WhyChooseSection />
       <CoursesSection />
       <TeamSection />
       <TestimonialsSection />
-      <GallerySection />
       <ContactSection />
     </div>
   );
