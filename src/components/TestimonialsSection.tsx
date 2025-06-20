@@ -2,12 +2,11 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Quote, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { MessageSquare, Quote, Star } from 'lucide-react';
 
 const TestimonialsSection = () => {
-  const { data: testimonials } = useQuery({
-    queryKey: ['featured-testimonials'],
+  const { data: stories } = useQuery({
+    queryKey: ['student-stories'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('student_stories')
@@ -19,74 +18,78 @@ const TestimonialsSection = () => {
   });
 
   return (
-    <section className="section-padding bg-white relative">
-      <div className="container-custom">
+    <section className="section-spacing bg-white relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <img 
+          src="https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=1200&h=800&fit=crop" 
+          alt="Success background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="section-container relative z-10">
         {/* Header */}
-        <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
-            Let us Send You Offering
+        <div className="text-center mb-20">
+          <div className="flex justify-center mb-8">
+            <div className="p-4 bg-gradient-to-br from-green-500 to-teal-500 rounded-3xl">
+              <MessageSquare className="w-12 h-12 text-white" />
+            </div>
+          </div>
+          
+          <h2 className="text-5xl lg:text-6xl font-black text-gray-900 mb-6">
+            Student Stories
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Real stories from real students who transformed their careers with Excel Institute
+          <p className="text-xl text-gray-600">
+            from CMS
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {testimonials?.map((testimonial, index) => (
+        {/* Stories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {stories?.map((story, index) => (
             <div 
-              key={testimonial.id} 
-              className="floating-card p-8 space-y-6"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              key={story.id} 
+              className="modern-card p-8 space-y-6 animate-slide-up"
+              style={{ animationDelay: `${index * 0.2}s` }}
             >
-              {/* Quote Icon */}
+              {/* Quote Header */}
               <div className="flex justify-between items-start">
-                <Quote className="w-6 h-6 text-green-primary" />
+                <Quote className="w-8 h-8 text-teal-500" />
                 <div className="flex text-yellow-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
+                    <Star key={i} className="w-5 h-5 fill-current" />
                   ))}
                 </div>
               </div>
               
-              {/* Testimonial Text */}
-              <blockquote className="text-gray-700 leading-relaxed italic">
-                "{testimonial.testimonial}"
+              {/* Story Content */}
+              <blockquote className="text-gray-700 leading-relaxed italic text-lg font-medium">
+                "{story.testimonial}"
               </blockquote>
               
-              {/* Author */}
-              <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
-                {testimonial.photo_url ? (
+              {/* Author Info */}
+              <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
+                {story.photo_url ? (
                   <img
-                    src={testimonial.photo_url}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-xl object-cover"
+                    src={story.photo_url}
+                    alt={story.name}
+                    className="w-16 h-16 rounded-2xl object-cover shadow-lg"
                   />
                 ) : (
-                  <div className="w-12 h-12 gradient-bg-2 rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold">
-                      {testimonial.name.charAt(0)}
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-xl">
+                      {story.name.charAt(0)}
                     </span>
                   </div>
                 )}
                 <div>
-                  <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                  <p className="text-green-primary text-sm">{testimonial.course_taken}</p>
+                  <h4 className="font-bold text-gray-900 text-lg">{story.name}</h4>
+                  <p className="text-teal-600 font-semibold">{story.course_taken}</p>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center">
-          <Link
-            to="/stories"
-            className="group inline-flex items-center gap-3 px-8 py-4 gradient-bg-1 text-white font-semibold rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            Read More Stories
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
         </div>
       </div>
     </section>

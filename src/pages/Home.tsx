@@ -5,6 +5,7 @@ import AboutSection from '../components/AboutSection';
 import CoursesSection from '../components/CoursesSection';
 import TeamSection from '../components/TeamSection';
 import TestimonialsSection from '../components/TestimonialsSection';
+import GallerySection from '../components/GallerySection';
 import ContactSection from '../components/ContactSection';
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
       <CoursesSection />
       <TeamSection />
       <TestimonialsSection />
+      <GallerySection />
       <ContactSection />
     </div>
   );

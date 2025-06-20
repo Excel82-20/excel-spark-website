@@ -53,14 +53,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom blue-green palette
-				'blue-primary': 'hsl(var(--blue-primary))',
-				'blue-secondary': 'hsl(var(--blue-secondary))',
-				'green-primary': 'hsl(var(--green-primary))',
-				'green-secondary': 'hsl(var(--green-secondary))',
-				'teal-accent': 'hsl(var(--teal-accent))',
-				'mint-light': 'hsl(var(--mint-light))',
-				'sage-light': 'hsl(var(--sage-light))',
+				// Enhanced blue-green palette
+				'ocean-blue': 'hsl(var(--ocean-blue))',
+				'teal-primary': 'hsl(var(--teal-primary))',
+				'mint-fresh': 'hsl(var(--mint-fresh))',
+				'sage-green': 'hsl(var(--sage-green))',
+				'deep-teal': 'hsl(var(--deep-teal))',
+				'light-cyan': 'hsl(var(--light-cyan))',
+				'navy-deep': 'hsl(var(--navy-deep))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -86,19 +86,54 @@ export default {
 						transform: 'translateY(0)'
 					}
 				},
-				'float': {
-					'0%, 100%': { transform: 'translateY(0px)' },
-					'50%': { transform: 'translateY(-20px)' }
+				'float-gentle': {
+					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+					'33%': { transform: 'translateY(-10px) rotate(1deg)' },
+					'66%': { transform: 'translateY(-5px) rotate(-1deg)' }
+				},
+				'slide-up': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(50px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'rotate-words': {
+					'0%, 25%': { 
+						opacity: '1',
+						transform: 'translateY(0) scale(1)'
+					},
+					'35%, 65%': { 
+						opacity: '0',
+						transform: 'translateY(-20px) scale(0.8)'
+					},
+					'75%, 100%': { 
+						opacity: '1',
+						transform: 'translateY(0) scale(1)'
+					}
+				},
+				'pulse-glow': {
+					'0%, 100%': { boxShadow: '0 0 20px rgba(52, 211, 153, 0.3)' },
+					'50%': { boxShadow: '0 0 40px rgba(52, 211, 153, 0.6)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
-				'float': 'float 6s ease-in-out infinite'
+				'float-gentle': 'float-gentle 8s ease-in-out infinite',
+				'slide-up': 'slide-up 0.8s ease-out forwards',
+				'rotate-words': 'rotate-words 4s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 3s ease-in-out infinite'
 			},
 			fontFamily: {
 				'inter': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+			},
+			borderWidth: {
+				'3': '3px',
 			}
 		}
 	},
