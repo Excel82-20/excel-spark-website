@@ -148,12 +148,31 @@ html {
   }
 }
 
+@keyframes rotateWords {
+  0%, 25% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+  35%, 65% { 
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  75%, 100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-rotate-words {
+  animation: rotateWords 6s ease-in-out infinite;
 }
 
 /* Decorative elements */

@@ -15,11 +15,25 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 lg:px-8 relative z-10">
         <div className="text-center space-y-8">
-          {/* Main Headline */}
+          {/* Main Headline with Rotating Text */}
           <div className="space-y-4">
             <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
-              Real Skills. Real Teachers.
-              <span className="block gradient-text">Real You.</span>
+              Real{' '}
+              <span className="gradient-text inline-block min-w-[300px] text-left">
+                <span className="animate-rotate-words">Skills</span>
+              </span>
+              . Real{' '}
+              <span className="gradient-text inline-block min-w-[300px] text-left">
+                <span className="animate-rotate-words" style={{ animationDelay: '2s' }}>Teachers</span>
+              </span>
+              .
+              <span className="block mt-4">
+                Real{' '}
+                <span className="gradient-text inline-block min-w-[200px] text-left">
+                  <span className="animate-rotate-words" style={{ animationDelay: '4s' }}>You</span>
+                </span>
+                .
+              </span>
             </h1>
             
             <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
