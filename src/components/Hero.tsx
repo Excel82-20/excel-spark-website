@@ -1,58 +1,44 @@
 
 import React from 'react';
-import { ArrowRight, MapPin, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, BookOpen, MapPin } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-blue-400/20 to-green-400/20 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-green-400/20 to-teal-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-100/30 to-green-100/30 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="container mx-auto px-6 lg:px-8 relative z-10">
-        <div className="text-center space-y-8">
-          {/* Main Headline */}
-          <div className="space-y-4">
-            <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight">
-              Real Skills. Real Teachers.
-              <span className="block gradient-text">Real You.</span>
-            </h1>
-            
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Join Excel Institute in Lagankhel – where learning is hands-on, fun, and taught by people who get you.
-            </p>
-          </div>
-
+    <section className="bg-white py-20">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Main headline */}
+          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight mb-8">
+            Real Skills.<br />
+            Real Teachers.<br />
+            <span className="text-blue-600">Real You.</span>
+          </h1>
+          
+          {/* Subtext */}
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">
+            Join Excel Institute in Lagankhel – where learning is hands-on, fun, 
+            and taught by people who get you.
+          </p>
+          
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
               to="/courses"
-              className="group inline-flex items-center gap-3 px-8 py-4 gradient-bg-1 text-white font-semibold rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-lg"
             >
               <BookOpen className="w-5 h-5" />
               Explore Courses
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5" />
             </Link>
-            
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-green-primary text-green-primary font-semibold rounded-2xl hover:bg-green-primary hover:text-white transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-blue-600 text-blue-600 font-semibold rounded-xl hover:bg-blue-600 hover:text-white transition-colors"
             >
               <MapPin className="w-5 h-5" />
               Find Us
             </Link>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-bounce"></div>
         </div>
       </div>
     </section>
