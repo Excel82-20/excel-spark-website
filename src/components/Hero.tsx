@@ -1,135 +1,90 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, MapPin, Info } from 'lucide-react';
+import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 
 const Hero = () => {
-  const [currentWord, setCurrentWord] = useState(0);
-  const words = ['Skills', 'Teachers', 'You'];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWord((prev) => (prev + 1) % words.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section className="min-h-screen flex items-center" style={{ background: 'linear-gradient(135deg, hsl(var(--peach)) 0%, hsl(var(--mint)) 50%, hsl(var(--lavender)) 100%)' }}>
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Text Content */}
-          <div className="text-center lg:text-left order-2 lg:order-1">
-            {/* Main Headline with Animation */}
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6 hero-animate-in">
-              Real{' '}
-              <span className="relative inline-block">
-                <span 
-                  key={currentWord}
-                  className="text-gradient animate-pulse"
-                  style={{ 
-                    animation: 'textCycle 2.5s infinite',
-                    animationDelay: `${currentWord * 0.1}s`
-                  }}
-                >
-                  {words[currentWord]}
-                </span>
-              </span>
-              .
+    <section className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-40"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-40"></div>
+        <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-40"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-screen">
+          
+          {/* Left Content */}
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-blue-100">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-medium text-gray-700">Next-Gen Learning Experience</span>
+            </div>
+            
+            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+              <span className="text-gray-900">Real</span>{' '}
+              <span className="gradient-text">Skills</span>
               <br />
-              Real Teachers.
+              <span className="text-gray-900">Real</span>{' '}
+              <span className="gradient-text">Teachers</span>
               <br />
-              <span className="text-gradient">Real You.</span>
+              <span className="gradient-text">Real You</span>
             </h1>
             
-            {/* Subtext */}
-            <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8 hero-fade-in font-medium">
+            <p className="text-xl text-gray-600 leading-relaxed max-w-xl">
               Join Excel Institute in Lagankhel – where learning is hands-on, fun, 
-              and taught by people who get you.
+              and taught by people who actually get you.
             </p>
             
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start hero-fade-in">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/courses"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-full button-hover shadow-lg"
-                style={{ backgroundColor: 'hsl(var(--mint-accent))', color: '#065f46' }}
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 gradient-bg text-white font-semibold rounded-2xl hover-lift transition-all"
               >
-                <BookOpen className="w-5 h-5" />
+                <Zap className="w-5 h-5" />
                 Explore Courses
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 border-2 font-semibold rounded-full button-hover"
-                style={{ 
-                  borderColor: 'hsl(var(--peach-accent))', 
-                  color: '#9a3412',
-                  backgroundColor: 'transparent'
-                }}
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-sm text-gray-900 font-semibold rounded-2xl border border-gray-200 hover-lift transition-all"
               >
-                <MapPin className="w-5 h-5" />
                 Find Us
-              </Link>
-              
-              <Link
-                to="/about"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-full button-hover"
-                style={{ 
-                  backgroundColor: 'hsl(var(--lavender-accent))', 
-                  color: '#7c3aed'
-                }}
-              >
-                <Info className="w-5 h-5" />
-                About
               </Link>
             </div>
           </div>
 
-          {/* Hero Image with Blob Shape */}
-          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-lg hero-image-animate">
-              {/* SVG Clip Path for Blob Shape */}
-              <svg width="0" height="0">
-                <defs>
-                  <clipPath id="blob-clip" clipPathUnits="objectBoundingBox">
-                    <path d="M0.25,0.05 C0.7,0.02 0.95,0.25 0.98,0.65 C0.95,0.9 0.7,0.98 0.35,0.95 C0.1,0.9 0.02,0.7 0.05,0.35 C0.08,0.1 0.15,0.08 0.25,0.05 Z"/>
-                  </clipPath>
-                </defs>
-              </svg>
-              
-              <div 
-                className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-2xl"
-                style={{ 
-                  clipPath: 'url(#blob-clip)',
-                  background: 'linear-gradient(135deg, hsl(var(--mint-accent)), hsl(var(--peach-accent)))'
-                }}
-              >
+          {/* Right Content - Image */}
+          <div className="relative">
+            <div className="relative w-full max-w-lg mx-auto">
+              <div className="absolute inset-0 gradient-bg rounded-3xl rotate-6 opacity-20"></div>
+              <div className="relative bg-white rounded-3xl p-2 shadow-2xl">
                 <img
                   src="/lovable-uploads/709e3d0a-7a86-4196-9eaa-0b6621e73962.png"
                   alt="Excel Institute Student"
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Overlay gradient for better text contrast if needed */}
-                <div 
-                  className="absolute inset-0 opacity-20"
-                  style={{ 
-                    background: 'linear-gradient(135deg, hsl(var(--mint-accent)), transparent)'
-                  }}
+                  className="w-full h-96 object-cover rounded-2xl"
                 />
               </div>
               
-              {/* Decorative elements */}
-              <div 
-                className="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-60 blur-xl"
-                style={{ backgroundColor: 'hsl(var(--lavender-accent))' }}
-              />
-              <div 
-                className="absolute -bottom-6 -left-6 w-32 h-32 rounded-full opacity-40 blur-2xl"
-                style={{ backgroundColor: 'hsl(var(--peach-accent))' }}
-              />
+              {/* Floating Elements */}
+              <div className="absolute -top-6 -right-6 bg-white rounded-2xl p-4 shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                  <span className="text-sm font-medium">Active Learning</span>
+                </div>
+              </div>
+              
+              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-4 shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 gradient-bg rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">95%</span>
+                  </div>
+                  <span className="text-sm font-medium">Success Rate</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,65 +1,69 @@
 
 import React from 'react';
-import { Clock, Star } from 'lucide-react';
+import { Clock, Users, Star } from 'lucide-react';
+import ModernCard from './ModernCard';
 
 interface CourseCardProps {
+  id: string;
   title: string;
+  description: string;
+  price: number;
   duration: string;
   category: string;
-  description: string;
-  highlights: string[];
-  image_url: string;
+  image_url?: string;
 }
 
-const CourseCard = ({ title, duration, category, description, highlights, image_url }: CourseCardProps) => {
+const CourseCard = ({ title, description, price, duration, category, image_url }: CourseCardProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={image_url}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-        />
+    <ModernCard className="overflow-hidden p-0">
+      <div className="aspect-video bg-gradient-to-br from-blue-100 to-purple-100 relative overflow-hidden">
+        {image_url ? (
+          <img 
+            src={image_url} 
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="text-6xl font-bold text-white/30">{title.charAt(0)}</div>
+          </div>
+        )}
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
+          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-700 rounded-full">
             {category}
-          </span>
-        </div>
-        <div className="absolute bottom-4 right-4">
-          <span className="flex items-center gap-1 px-3 py-1 bg-white/90 text-gray-700 text-sm rounded-full">
-            <Clock className="w-4 h-4" />
-            {duration}
           </span>
         </div>
       </div>
       
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
-          {title}
-        </h3>
+      <div className="p-8">
+        <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
+        <p className="text-gray-600 mb-6 leading-relaxed">{description}</p>
         
-        <p className="text-gray-600 mb-4 line-clamp-2">{description}</p>
-        
-        <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-blue-600 flex items-center gap-2">
-            <Star className="w-4 h-4" />
-            Key Highlights:
-          </h4>
-          <ul className="space-y-2">
-            {highlights.slice(0, 3).map((highlight, index) => (
-              <li key={index} className="text-sm text-gray-600 flex items-center">
-                <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                {highlight}
-              </li>
-            ))}
-          </ul>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>{duration}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="w-4 h-4" />
+              <span>Max 15</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+              <span>4.9</span>
+            </div>
+          </div>
         </div>
         
-        <button className="w-full mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors shadow-md">
-          Learn More
-        </button>
+        <div className="flex items-center justify-between">
+          <div className="text-2xl font-bold gradient-text">Rs {price.toLocaleString()}</div>
+          <button className="px-6 py-3 gradient-bg text-white font-semibold rounded-xl hover-lift transition-all">
+            Enroll Now
+          </button>
+        </div>
       </div>
-    </div>
+    </ModernCard>
   );
 };
 
