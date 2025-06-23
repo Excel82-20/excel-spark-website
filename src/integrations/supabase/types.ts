@@ -39,6 +39,7 @@ export type Database = {
           highlights: string[]
           id: string
           image_url: string | null
+          price: number
           title: string
           updated_at: string
         }
@@ -50,6 +51,7 @@ export type Database = {
           highlights?: string[]
           id?: string
           image_url?: string | null
+          price?: number
           title: string
           updated_at?: string
         }
@@ -61,6 +63,7 @@ export type Database = {
           highlights?: string[]
           id?: string
           image_url?: string | null
+          price?: number
           title?: string
           updated_at?: string
         }
