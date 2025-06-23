@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +10,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -27,88 +27,67 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
       scrolled 
-        ? 'bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-lg' 
+        ? 'bg-white/80 backdrop-blur-strong shadow-sm' 
         : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="w-12 h-12 electric-gradient rounded-xl flex items-center justify-center pulse-glow">
-                <Zap className="w-7 h-7 text-white" />
-              </div>
-            </div>
-            <span className="text-2xl font-bold text-gray-900 group-hover:text-cyan-500 transition-colors">
-              Excel<span className="neon-text">.</span>
+          <Link to="/" className="flex items-center group">
+            <span className="text-2xl font-bold tracking-tight text-black group-hover:opacity-70 transition-opacity duration-300">
+              Excel Institute
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className={`relative text-sm font-medium transition-all duration-300 hover:text-cyan-500 ${
+                className={`relative text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
                   location.pathname === item.path
-                    ? 'text-cyan-500'
-                    : 'text-gray-700'
+                    ? 'text-black'
+                    : 'text-black/60 hover:text-black'
                 }`}
               >
                 {item.name}
                 {location.pathname === item.path && (
-                  <div className="absolute -bottom-2 left-0 right-0 h-0.5 electric-gradient rounded-full"></div>
+                  <div className="absolute -bottom-2 left-0 right-0 h-px bg-black"></div>
                 )}
               </Link>
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Link
-              to="/contact"
-              className="px-6 py-3 electric-gradient text-white font-medium rounded-xl hover:scale-105 transition-transform duration-300 shadow-lg"
-            >
-              Get Started
-            </Link>
-          </div>
-
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="md:hidden p-2 text-black hover:opacity-70 transition-opacity"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-6 border-t border-gray-200/50 bg-white/95 backdrop-blur-lg">
+          <div className="md:hidden py-8 bg-white/95 backdrop-blur-strong">
             {navItems.map((item, index) => (
               <Link
                 key={item.name}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`block py-4 px-2 text-lg font-medium transition-colors fade-in-delayed ${
+                className={`block py-4 text-lg font-medium tracking-wide uppercase transition-colors cinematic-fade ${
                   location.pathname === item.path
-                    ? 'text-cyan-500'
-                    : 'text-gray-700 hover:text-cyan-500'
+                    ? 'text-black'
+                    : 'text-black/60 hover:text-black'
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {item.name}
               </Link>
             ))}
-            <Link
-              to="/contact"
-              className="block mt-4 px-6 py-3 electric-gradient text-white font-medium rounded-xl text-center"
-            >
-              Get Started
-            </Link>
           </div>
         )}
       </div>

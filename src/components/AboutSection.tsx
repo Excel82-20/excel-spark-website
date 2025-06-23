@@ -1,92 +1,60 @@
 
 import React from 'react';
-import { Zap, Target, Rocket, Brain } from 'lucide-react';
-import ModernCard from './ModernCard';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const AboutSection = () => {
-  const features = [
-    {
-      icon: Brain,
-      title: "AI-Powered Learning",
-      description: "Personalized learning paths adapted to your pace and style using cutting-edge AI technology.",
-      color: "text-cyan-500"
-    },
-    {
-      icon: Zap,
-      title: "Lightning Fast Results",
-      description: "See real progress in weeks, not months. Our accelerated learning methodology gets you job-ready fast.",
-      color: "text-purple-500"
-    },
-    {
-      icon: Target,
-      title: "Industry-Focused",
-      description: "Learn exactly what top companies are looking for. Our curriculum is built by industry professionals.",
-      color: "text-pink-500"
-    },
-    {
-      icon: Rocket,
-      title: "Career Acceleration",
-      description: "From zero to hero with our proven track record of launching successful tech careers.",
-      color: "text-orange-500"
-    }
-  ];
-
   return (
-    <section className="py-32 geometric-bg">
-      <div className="container mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-20 slide-up">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6">
-            <Zap className="w-5 h-5 text-cyan-500" />
-            <span className="text-sm font-medium text-gray-800">Why Choose Excel Institute</span>
+    <section className="min-h-screen flex items-center py-32">
+      <div className="max-w-7xl mx-auto px-8">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          {/* Content */}
+          <div className="cinematic-slide-up">
+            <h2 className="text-5xl md:text-7xl font-bold mb-12 leading-tight">
+              Excellence in
+              <br />
+              <span className="italic">Education</span>
+            </h2>
+            
+            <div className="space-y-8 text-lg md:text-xl text-black/70 font-light leading-relaxed">
+              <p>
+                For over a decade, Excel Institute has been at the forefront of technological education, 
+                shaping minds and building futures in the ever-evolving digital landscape.
+              </p>
+              
+              <p>
+                Our approach combines theoretical foundation with practical application, ensuring 
+                our graduates are not just knowledgeable, but industry-ready from day one.
+              </p>
+              
+              <p>
+                We believe in the power of personalized learning, small class sizes, and 
+                mentorship that extends beyond the classroom.
+              </p>
+            </div>
+            
+            <div className="mt-12">
+              <Link
+                to="/about"
+                className="group inline-flex items-center gap-4 text-lg font-medium uppercase tracking-widest hover:opacity-70 transition-opacity"
+              >
+                Learn More About Us
+                <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </div>
           </div>
           
-          <h2 className="text-6xl font-bold text-gray-900 mb-8">
-            Learning That <span className="text-shimmer">Actually Works</span>
-          </h2>
-          
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-            We're not just another coding bootcamp. We're a launchpad for your tech career, 
-            combining cutting-edge curriculum with real-world experience.
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {features.map((feature, index) => (
-            <ModernCard 
-              key={index} 
-              className="text-center group"
-              hover={true}
-            >
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                <feature.icon className={`w-8 h-8 ${feature.color}`} />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-              <p className="text-gray-600 leading-relaxed font-light">{feature.description}</p>
-            </ModernCard>
-          ))}
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center">
-          <ModernCard className="max-w-4xl mx-auto text-center" glowing={true}>
-            <h3 className="text-4xl font-bold text-gray-900 mb-6">
-              Ready to <span className="neon-text">Transform</span> Your Future?
-            </h3>
-            <p className="text-xl text-gray-600 leading-relaxed mb-8 font-light">
-              Join hundreds of successful graduates who've launched their dream careers in tech. 
-              Your transformation starts with a single click.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button className="px-10 py-4 electric-gradient text-white font-semibold rounded-xl floating-card text-lg">
-                Start Your Journey
-              </button>
-              <button className="px-10 py-4 bg-white border-2 border-gray-200 text-gray-900 font-semibold rounded-xl floating-card hover:neon-border text-lg">
-                View Success Stories
-              </button>
+          {/* Image */}
+          <div className="cinematic-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="relative aspect-[4/5] overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Student learning"
+                className="w-full h-full object-cover cinematic-scale"
+              />
+              <div className="absolute inset-0 bg-black/10"></div>
             </div>
-          </ModernCard>
+          </div>
         </div>
       </div>
     </section>

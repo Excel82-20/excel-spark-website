@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Filter, Search, BookOpen } from 'lucide-react';
+import { Search } from 'lucide-react';
 import CourseCard from '../components/CourseCard';
 
 const Courses = () => {
@@ -29,63 +29,53 @@ const Courses = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen geometric-bg flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 electric-gradient rounded-2xl flex items-center justify-center pulse-glow mx-auto mb-4">
-            <BookOpen className="w-8 h-8 text-white" />
-          </div>
-          <div className="text-gray-600 text-xl font-medium">Loading courses...</div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <p className="text-2xl font-light">Loading courses...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen geometric-bg py-32">
-      <div className="container mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-20 slide-up">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6">
-            <BookOpen className="w-5 h-5 text-cyan-500" />
-            <span className="text-sm font-medium text-gray-800">All Programs</span>
+    <div className="min-h-screen pt-20">
+      {/* Hero Section */}
+      <section className="py-32 text-center">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="cinematic-slide-up">
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight">
+              Our
+              <br />
+              <span className="italic">Courses</span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-black/60 max-w-4xl mx-auto font-light mb-16">
+              Comprehensive programs designed to elevate your skills and accelerate your career
+            </p>
           </div>
-          
-          <h1 className="text-6xl font-bold text-gray-900 mb-8">
-            Master <span className="text-shimmer">Every Skill</span> You Need
-          </h1>
-          
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
-            From beginner-friendly introductions to advanced professional certifications, 
-            our comprehensive course catalog has everything you need to accelerate your career.
-          </p>
-        </div>
 
-        {/* Search and Filter */}
-        <div className="mb-16 space-y-8">
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto relative">
+          {/* Search */}
+          <div className="cinematic-slide-up max-w-2xl mx-auto mb-16" style={{ animationDelay: '0.3s' }}>
             <div className="relative">
-              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" />
+              <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black/40" />
               <input
                 type="text"
                 placeholder="Search courses..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-16 pr-6 py-6 bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl text-lg font-medium focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 transition-all"
+                className="w-full pl-16 pr-6 py-6 bg-white border border-black/10 text-lg font-light focus:outline-none focus:border-black/30 transition-colors"
               />
             </div>
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="cinematic-slide-up flex flex-wrap justify-center gap-4 mb-20" style={{ animationDelay: '0.6s' }}>
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-8 py-4 rounded-2xl font-semibold transition-all text-lg ${
+                className={`px-8 py-3 font-medium uppercase tracking-widest text-sm transition-all duration-300 ${
                   selectedCategory === category
-                    ? 'electric-gradient text-white shadow-lg floating-card'
-                    : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white border border-gray-200/50 floating-card'
+                    ? 'bg-black text-white'
+                    : 'text-black/60 hover:text-black border border-black/10 hover:border-black/30'
                 }`}
               >
                 {category}
@@ -93,53 +83,39 @@ const Courses = () => {
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Results Count */}
-        <div className="text-center mb-12">
-          <p className="text-lg text-gray-600 font-medium">
-            Showing <span className="neon-text font-bold">{filteredCourses?.length || 0}</span> courses
-          </p>
-        </div>
-
-        {/* Course Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
-          {filteredCourses?.map((course, index) => (
-            <div key={course.id} className="fade-in-delayed" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CourseCard {...course} />
+      {/* Courses Grid */}
+      <section className="pb-32">
+        <div className="max-w-7xl mx-auto px-8">
+          {filteredCourses && filteredCourses.length > 0 ? (
+            <>
+              <div className="text-center mb-12">
+                <p className="text-lg text-black/60 font-light">
+                  Showing {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredCourses.map((course, index) => (
+                  <div 
+                    key={course.id} 
+                    className="cinematic-slide-up" 
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <CourseCard {...course} />
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-32">
+              <h3 className="text-4xl font-bold mb-4">No courses found</h3>
+              <p className="text-xl text-black/60 font-light">Try adjusting your search or filter criteria</p>
             </div>
-          ))}
+          )}
         </div>
-
-        {/* Empty State */}
-        {filteredCourses?.length === 0 && (
-          <div className="text-center py-20">
-            <div className="w-24 h-24 electric-gradient rounded-3xl flex items-center justify-center mx-auto mb-8 opacity-50">
-              <Search className="w-12 h-12 text-white" />
-            </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">No courses found</h3>
-            <p className="text-xl text-gray-600 font-light">Try adjusting your search or filter criteria</p>
-          </div>
-        )}
-
-        {/* CTA Section */}
-        <div className="text-center bg-white/90 backdrop-blur-sm rounded-3xl p-12 border border-gray-200/50">
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Ready to Start Your <span className="neon-text">Journey</span>?
-          </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto font-light">
-            Join thousands of students who have transformed their careers with our 
-            industry-leading courses and expert mentorship.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button className="px-12 py-5 electric-gradient text-white font-semibold rounded-2xl floating-card text-xl">
-              Enroll Now
-            </button>
-            <button className="px-12 py-5 bg-white border-2 border-gray-200 text-gray-900 font-semibold rounded-2xl floating-card hover:neon-border text-xl">
-              Schedule Demo
-            </button>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
