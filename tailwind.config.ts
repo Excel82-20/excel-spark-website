@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'poppins': ['Poppins', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -62,6 +65,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// New pastel colors
+				peach: {
+					DEFAULT: 'hsl(var(--peach))',
+					accent: 'hsl(var(--peach-accent))'
+				},
+				mint: {
+					DEFAULT: 'hsl(var(--mint))',
+					accent: 'hsl(var(--mint-accent))'
+				},
+				lavender: {
+					DEFAULT: 'hsl(var(--lavender))',
+					accent: 'hsl(var(--lavender-accent))'
 				}
 			},
 			borderRadius: {
@@ -95,12 +111,29 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'hero-slide-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(40px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'text-cycle': {
+					'0%, 30%': { opacity: '1', transform: 'translateY(0)' },
+					'35%, 65%': { opacity: '0', transform: 'translateY(-10px)' },
+					'70%, 100%': { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.6s ease-out'
+				'fade-in': 'fade-in 0.6s ease-out',
+				'hero-slide-in': 'hero-slide-in 0.8s ease-out',
+				'text-cycle': 'text-cycle 2.5s infinite'
 			}
 		}
 	},
