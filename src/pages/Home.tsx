@@ -10,7 +10,7 @@ import ContactSection from '../components/ContactSection';
 
 const Home = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white overflow-hidden">
       <Hero />
       <AboutSection />
       <CoursesSection />

@@ -1,72 +1,91 @@
 
 import React from 'react';
-import { Target, Users, Award, Lightbulb } from 'lucide-react';
+import { Zap, Target, Rocket, Brain } from 'lucide-react';
 import ModernCard from './ModernCard';
 
 const AboutSection = () => {
   const features = [
     {
+      icon: Brain,
+      title: "AI-Powered Learning",
+      description: "Personalized learning paths adapted to your pace and style using cutting-edge AI technology.",
+      color: "text-cyan-500"
+    },
+    {
+      icon: Zap,
+      title: "Lightning Fast Results",
+      description: "See real progress in weeks, not months. Our accelerated learning methodology gets you job-ready fast.",
+      color: "text-purple-500"
+    },
+    {
       icon: Target,
-      title: "Practical Learning",
-      description: "Hands-on projects and real-world scenarios that prepare you for actual job challenges.",
-      color: "text-blue-600"
+      title: "Industry-Focused",
+      description: "Learn exactly what top companies are looking for. Our curriculum is built by industry professionals.",
+      color: "text-pink-500"
     },
     {
-      icon: Users,
-      title: "Cool Teachers",
-      description: "Learn from young, passionate instructors who make you say 'Ohh now I get it.'",
-      color: "text-purple-600"
-    },
-    {
-      icon: Award,
-      title: "Real Results",
-      description: "Job placement assistance and career guidance to help you achieve your goals.",
-      color: "text-green-600"
-    },
-    {
-      icon: Lightbulb,
-      title: "Innovation First",
-      description: "Cutting-edge curriculum that stays ahead of industry trends and demands.",
-      color: "text-orange-600"
+      icon: Rocket,
+      title: "Career Acceleration",
+      description: "From zero to hero with our proven track record of launching successful tech careers.",
+      color: "text-orange-500"
     }
   ];
 
   return (
-    <section className="py-32 bg-gradient-to-br from-gray-50 to-blue-50/30">
-      <div className="container mx-auto px-4">
+    <section className="py-32 geometric-bg">
+      <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Learning That Actually{' '}
-            <span className="gradient-text">Makes Sense</span>
+        <div className="text-center mb-20 slide-up">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6">
+            <Zap className="w-5 h-5 text-cyan-500" />
+            <span className="text-sm font-medium text-gray-800">Why Choose Excel Institute</span>
+          </div>
+          
+          <h2 className="text-6xl font-bold text-gray-900 mb-8">
+            Learning That <span className="text-shimmer">Actually Works</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            At Excel Institute, we believe in learning that actually makes sense. Our classes are practical, 
-            our teachers are chill and smart, and our goal is to make you confident in what you learn.
+          
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
+            We're not just another coding bootcamp. We're a launchpad for your tech career, 
+            combining cutting-edge curriculum with real-world experience.
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           {features.map((feature, index) => (
-            <ModernCard key={index} className="text-center">
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center`}>
+            <ModernCard 
+              key={index} 
+              className="text-center group"
+              hover={true}
+            >
+              <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
                 <feature.icon className={`w-8 h-8 ${feature.color}`} />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <p className="text-gray-600 leading-relaxed font-light">{feature.description}</p>
             </ModernCard>
           ))}
         </div>
 
-        {/* Mission Statement */}
-        <div className="mt-20">
-          <ModernCard className="text-center max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h3>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              We offer computer, language, and academic coaching classes that focus on projects, skills, 
-              and concept clarity — not boring theory or memorization.
+        {/* CTA Section */}
+        <div className="text-center">
+          <ModernCard className="max-w-4xl mx-auto text-center" glowing={true}>
+            <h3 className="text-4xl font-bold text-gray-900 mb-6">
+              Ready to <span className="neon-text">Transform</span> Your Future?
+            </h3>
+            <p className="text-xl text-gray-600 leading-relaxed mb-8 font-light">
+              Join hundreds of successful graduates who've launched their dream careers in tech. 
+              Your transformation starts with a single click.
             </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <button className="px-10 py-4 electric-gradient text-white font-semibold rounded-xl floating-card text-lg">
+                Start Your Journey
+              </button>
+              <button className="px-10 py-4 bg-white border-2 border-gray-200 text-gray-900 font-semibold rounded-xl floating-card hover:neon-border text-lg">
+                View Success Stories
+              </button>
+            </div>
           </ModernCard>
         </div>
       </div>

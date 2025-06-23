@@ -1,82 +1,105 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Facebook, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Zap, Facebook, Instagram, Mail, Phone, MapPin, ArrowUp } from 'lucide-react';
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="bg-gray-900 text-white py-20">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center">
-                <GraduationCap className="w-7 h-7 text-white" />
+    <footer className="relative bg-gray-900 text-white overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-32 h-32 electric-gradient rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 electric-gradient rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 electric-gradient rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10 py-20">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Brand */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-14 h-14 electric-gradient rounded-2xl flex items-center justify-center pulse-glow">
+                  <Zap className="w-8 h-8 text-white" />
+                </div>
+                <span className="text-3xl font-bold">
+                  Excel<span className="neon-text">.</span>
+                </span>
               </div>
-              <span className="text-2xl font-bold">Excel Institute</span>
+              <p className="text-gray-300 leading-relaxed mb-8 text-lg font-light max-w-md">
+                Transforming lives through cutting-edge education. Join the next generation 
+                of tech innovators and change your future today.
+              </p>
+              <div className="flex gap-6">
+                <a href="#" className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center hover:scale-110 transition-transform floating-card">
+                  <Facebook className="w-6 h-6" />
+                </a>
+                <a href="#" className="w-14 h-14 electric-gradient rounded-2xl flex items-center justify-center hover:scale-110 transition-transform floating-card">
+                  <Instagram className="w-6 h-6" />
+                </a>
+              </div>
             </div>
-            <p className="text-gray-300 leading-relaxed mb-6">
-              Where learning is hands-on, fun, and taught by people who actually get you.
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-xl font-bold mb-8 text-white">Quick Links</h3>
+              <ul className="space-y-4">
+                {['Home', 'About', 'Courses', 'Team', 'Stories'].map((item) => (
+                  <li key={item}>
+                    <Link 
+                      to={item === 'Home' ? '/' : `/${item.toLowerCase()}`} 
+                      className="text-gray-300 hover:text-cyan-400 transition-colors text-lg font-light hover:translate-x-2 inline-block transition-transform"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3 className="text-xl font-bold mb-8 text-white">Get in Touch</h3>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 electric-gradient rounded-xl flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-gray-300 font-light">Lagankhel, Lalitpur</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 electric-gradient rounded-xl flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-gray-300 font-light">+977-1-5555555</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 electric-gradient rounded-xl flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-gray-300 font-light">hello@excelinstitute.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between">
+            <p className="text-gray-400 font-light text-lg">
+              © 2024 Excel Institute. All rights reserved. Made with <span className="neon-text">❤️</span> in Nepal.
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-all">
-                <Instagram className="w-5 h-5" />
-              </a>
-            </div>
+            
+            <button 
+              onClick={scrollToTop}
+              className="mt-4 md:mt-0 w-12 h-12 electric-gradient rounded-2xl flex items-center justify-center floating-card hover:scale-110"
+            >
+              <ArrowUp className="w-6 h-6 text-white" />
+            </button>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
-            <ul className="space-y-3">
-              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About</Link></li>
-              <li><Link to="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</Link></li>
-              <li><Link to="/team" className="text-gray-300 hover:text-white transition-colors">Team</Link></li>
-              <li><Link to="/stories" className="text-gray-300 hover:text-white transition-colors">Stories</Link></li>
-            </ul>
-          </div>
-
-          {/* Courses */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6">Popular Courses</h3>
-            <ul className="space-y-3 text-gray-300">
-              <li>Web Development</li>
-              <li>Graphic Design</li>
-              <li>Digital Marketing</li>
-              <li>Data Science</li>
-              <li>UI/UX Design</li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6">Contact Info</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">Lagankhel, Lalitpur</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">+977-1-5555555</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">info@excelinstitute.com</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-800 pt-8 text-center">
-          <p className="text-gray-400">
-            © 2024 Excel Institute. All rights reserved. Made with ❤️ in Nepal.
-          </p>
         </div>
       </div>
     </footer>
