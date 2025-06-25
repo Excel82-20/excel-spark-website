@@ -71,18 +71,24 @@ export type Database = {
       }
       gallery_photos: {
         Row: {
+          caption: string | null
+          category: string | null
           created_at: string | null
           id: string
           photo_url: string
           updated_at: string
         }
         Insert: {
+          caption?: string | null
+          category?: string | null
           created_at?: string | null
           id?: string
           photo_url: string
           updated_at?: string
         }
         Update: {
+          caption?: string | null
+          category?: string | null
           created_at?: string | null
           id?: string
           photo_url?: string

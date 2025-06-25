@@ -1,3 +1,4 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { DraggableContainer, GridBody, GridItem } from "@/components/ui/infinite-drag-scroll";
@@ -6,15 +7,18 @@ import type { Tables } from '@/integrations/supabase/types';
 type GalleryPhoto = Tables<'gallery_photos'>;
 
 const fetchGalleryPhotos = async (): Promise<GalleryPhoto[]> => {
+  console.log('Fetching gallery photos for public gallery...');
   const { data, error } = await supabase
     .from('gallery_photos')
     .select('*')
     .order('created_at', { ascending: false });
 
   if (error) {
+    console.error('Error fetching gallery photos:', error);
     throw new Error(`Error fetching gallery photos: ${error.message}`);
   }
 
+  console.log('Gallery photos fetched for public gallery:', data);
   return data || [];
 };
 
@@ -58,9 +62,14 @@ const Gallery = () => {
           >
             <img
               src={photo.photo_url}
-              alt="Gallery photo"
-              className="pointer-events-none absolute h-full w-full object-cover"
+              alt={photo.caption || "Gallery photo"}
+              className="pointer-events-none absolute h-full w-full object-cover rounded-lg"
             />
+            {photo.caption && (
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 rounded-b-lg">
+                <p className="text-sm">{photo.caption}</p>
+              </div>
+            )}
           </GridItem>
         ))}
       </GridBody>
