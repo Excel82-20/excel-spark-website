@@ -1,12 +1,11 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Lock, User } from 'lucide-react';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,25 +15,12 @@ const AdminLogin = () => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const { data, error } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('email', email)
-        .eq('password_hash', password)
-        .single();
-
-      if (error || !data) {
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Store admin session in localStorage
-      localStorage.setItem('admin_session', JSON.stringify(data));
+    // Simple hardcoded authentication - no email required
+    if (username === 'admin' && password === 'admin123') {
+      localStorage.setItem('admin_session', JSON.stringify({ 
+        username: 'admin',
+        loginTime: new Date().toISOString()
+      }));
       
       toast({
         title: "Login Successful",
@@ -42,15 +28,15 @@ const AdminLogin = () => {
       });
       
       navigate('/admin0417');
-    } catch (error) {
+    } else {
       toast({
         title: "Login Failed",
-        description: "An error occurred during login",
+        description: "Invalid username or password",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
+    
+    setLoading(false);
   };
 
   return (
@@ -68,16 +54,16 @@ const AdminLogin = () => {
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Email
+                Username
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="admin@excelinstitute.com"
+                  placeholder="admin"
                   required
                 />
               </div>
@@ -111,7 +97,7 @@ const AdminLogin = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-slate-400">
-              Default credentials: admin@excelinstitute.com / admin123
+              Username: admin / Password: admin123
             </p>
           </div>
         </div>
