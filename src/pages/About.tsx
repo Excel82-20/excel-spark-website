@@ -12,7 +12,7 @@ const About = () => {
             About Excel Institute
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            At Excel Institute, we believe in learning that actually makes sense. Our classes are practical, 
+            At Excel Institute, we believefgdf sfdgsdfgs fgsdfg in learning that actually makes sense. Our classes are practical, 
             our teachers are chill and smart, and our goal is to make you confident in what you learn.
           </p>
           <p className="text-lg text-gray-500 max-w-2xl mx-auto">
@@ -41,7 +41,7 @@ const About = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h2>
             <p className="text-gray-600 leading-relaxed">
               To be the leading institute where learning is fun, practical, and accessible to everyone. 
-              We envision a community where every student discovers their potential and achieves their dreams.
+              We envision a community whedfgsdfgsdfgre every student discovers their potential and achieves their dreams.
             </p>
           </div>
         </div>
