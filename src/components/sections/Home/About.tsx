@@ -1,3 +1,4 @@
+
 "use client"
 
 import type React from "react"
@@ -59,7 +60,7 @@ export default function AboutUsSection() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: "easeOut" },
+      transition: { duration: 0.6, ease: "easeOut" as const },
     },
   }
 
@@ -364,7 +365,7 @@ interface ServiceItemProps {
   description: string
   variants: {
     hidden: { opacity: number; y?: number }
-    visible: { opacity: number; y?: number; transition: { duration: number; ease: string } }
+    visible: { opacity: number; y?: number; transition: { duration: number; ease: "easeOut" } }
   }
   delay: number
   direction: "left" | "right"
@@ -473,4 +474,4 @@ function StatCounter({ icon, value, label, suffix, delay }: StatCounterProps) {
       <motion.div className="w-10 h-0.5 bg-[#88734C] mt-3 group-hover:w-16 transition-all duration-300" />
     </motion.div>
   )
-} 
+}

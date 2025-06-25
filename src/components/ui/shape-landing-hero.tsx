@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -198,4 +199,4 @@ function HeroGeometric({
     );
 }
 
-export { HeroGeometric }; 
+export { HeroGeometric };
