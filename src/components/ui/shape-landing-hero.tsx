@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -35,7 +36,7 @@ function ElegantShape({
             transition={{
                 duration: 2.4,
                 delay,
-                ease: [0.23, 0.86, 0.39, 0.96],
+                ease: [0.23, 0.86, 0.39, 0.96] as any,
                 opacity: { duration: 1.2 },
             }}
             className={cn("absolute", className)}
@@ -88,7 +89,7 @@ function HeroGeometric({
             transition: {
                 duration: 1,
                 delay: 0.5 + i * 0.2,
-                ease: [0.25, 0.4, 0.25, 1],
+                ease: [0.25, 0.4, 0.25, 1] as any,
             },
         }),
     };
@@ -200,3 +201,4 @@ function HeroGeometric({
 }
 
 export { HeroGeometric };
+
