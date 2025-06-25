@@ -44,26 +44,16 @@ const TeamTab = () => {
   const { data: teamMembers, isLoading } = useQuery({
     queryKey: ['team-members'],
     queryFn: async () => {
-      console.log('Fetching team members...');
-      const { data, error } = await supabase.from('team_members').select('*').order('created_at', { ascending: false });
-      if (error) {
-        console.error('Error fetching team members:', error);
-        throw error;
-      }
-      console.log('Team members fetched:', data);
+      const { data, error } = await supabase.from('team_members').select('*');
+      if (error) throw error;
       return data as TeamMember[];
     },
   });
 
   const createMutation = useMutation({
     mutationFn: async (data: Omit<TeamMember, 'id'>) => {
-      console.log('Creating team member with data:', data);
       const { error } = await supabase.from('team_members').insert([data]);
-      if (error) {
-        console.error('Error creating team member:', error);
-        throw error;
-      }
-      console.log('Team member created successfully');
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team-members'] });
@@ -71,21 +61,15 @@ const TeamTab = () => {
       handleCloseDialog();
     },
     onError: (error) => {
-      console.error('Create mutation error:', error);
       toast({ title: 'Error adding team member', description: error.message, variant: 'destructive' });
     }
   });
 
   const updateMutation = useMutation({
     mutationFn: async (data: TeamMember) => {
-      console.log('Updating team member with data:', data);
       const { id, ...updateData } = data;
       const { error } = await supabase.from('team_members').update(updateData).eq('id', id);
-      if (error) {
-        console.error('Error updating team member:', error);
-        throw error;
-      }
-      console.log('Team member updated successfully');
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team-members'] });
@@ -93,34 +77,26 @@ const TeamTab = () => {
       handleCloseDialog();
     },
     onError: (error) => {
-      console.error('Update mutation error:', error);
       toast({ title: 'Error updating team member', description: error.message, variant: 'destructive' });
     }
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      console.log('Deleting team member with id:', id);
       const { error } = await supabase.from('team_members').delete().eq('id', id);
-      if (error) {
-        console.error('Error deleting team member:', error);
-        throw error;
-      }
-      console.log('Team member deleted successfully');
+      if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['team-members'] });
       toast({ title: 'Team member deleted successfully!' });
     },
     onError: (error) => {
-      console.error('Delete mutation error:', error);
       toast({ title: 'Error deleting team member', description: error.message, variant: 'destructive' });
     }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     const memberData = {
       name: formData.name,
       role: formData.role,
@@ -132,8 +108,6 @@ const TeamTab = () => {
       }
     };
 
-    console.log('Submitting team member data:', memberData);
-
     if (editingMember) {
       updateMutation.mutate({ ...memberData, id: editingMember.id });
     } else {
@@ -142,7 +116,6 @@ const TeamTab = () => {
   };
 
   const handleEdit = (member: TeamMember) => {
-    console.log('Editing team member:', member);
     setEditingMember(member);
     setFormData({
       name: member.name,
@@ -239,12 +212,8 @@ const TeamTab = () => {
                 />
               </div>
               <div className="flex gap-2">
-                <Button 
-                  type="submit" 
-                  className="bg-purple-600 hover:bg-purple-700"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                >
-                  {createMutation.isPending || updateMutation.isPending ? 'Saving...' : (editingMember ? 'Update' : 'Create')}
+                <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
+                  {editingMember ? 'Update' : 'Create'}
                 </Button>
                 <Button type="button" variant="outline" onClick={handleCloseDialog}>
                   Cancel
@@ -292,7 +261,6 @@ const TeamTab = () => {
                 variant="outline"
                 onClick={() => handleDelete(member.id)}
                 className="text-red-400 border-red-400 hover:bg-red-400 hover:text-white"
-                disabled={deleteMutation.isPending}
               >
                 <Trash2 className="w-4 h-4" />
               </Button>

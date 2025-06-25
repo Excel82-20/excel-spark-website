@@ -53,51 +53,27 @@ const Gallery = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20">
-      <section className="py-16 text-center">
-        <div className="max-w-7xl mx-auto px-8">
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight">
-            Our
-            <br />
-            <span className="italic">Gallery</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-black/60 max-w-4xl mx-auto font-light mb-16">
-            Moments that capture our journey of learning and growth
-          </p>
-        </div>
-      </section>
-
-      <section className="pb-32">
-        <div className="max-w-7xl mx-auto px-8">
-          <DraggableContainer variant="masonry">
-            <GridBody>
-              {photos.map((photo) => (
-                <GridItem
-                  key={photo.id}
-                  className="relative h-54 w-36 md:h-96 md:w-64"
-                >
-                  <img
-                    src={photo.photo_url}
-                    alt={photo.caption || "Gallery photo"}
-                    className="pointer-events-none absolute h-full w-full object-cover rounded-lg"
-                  />
-                  {(photo.caption || photo.category) && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
-                      {photo.caption && (
-                        <p className="text-sm font-medium mb-1">{photo.caption}</p>
-                      )}
-                      {photo.category && (
-                        <p className="text-xs opacity-80 uppercase tracking-wide">{photo.category}</p>
-                      )}
-                    </div>
-                  )}
-                </GridItem>
-              ))}
-            </GridBody>
-          </DraggableContainer>
-        </div>
-      </section>
-    </div>
+    <DraggableContainer variant="masonry">
+      <GridBody>
+        {photos.map((photo) => (
+          <GridItem
+            key={photo.id}
+            className="relative h-54 w-36 md:h-96 md:w-64"
+          >
+            <img
+              src={photo.photo_url}
+              alt={photo.caption || "Gallery photo"}
+              className="pointer-events-none absolute h-full w-full object-cover rounded-lg"
+            />
+            {photo.caption && (
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 rounded-b-lg">
+                <p className="text-sm">{photo.caption}</p>
+              </div>
+            )}
+          </GridItem>
+        ))}
+      </GridBody>
+    </DraggableContainer>
   );
 };
 
