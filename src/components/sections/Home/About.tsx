@@ -188,7 +188,7 @@ export default function AboutUsSection() {
         </motion.div>
 
         <motion.p className="text-center max-w-2xl mx-auto mb-16 text-[#202e44]/80" variants={itemVariants}>
-          We are a passionate team of designers and architects dedicated to creating beautiful, functional spaces that
+          We are a passionate team of teachers and architects dedicated to creating beautiful, functional spaces that
           inspire and elevate everyday living. With attention to detail and commitment to excellence, we transform
           visions into reality.
         </motion.p>

@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import ModernCard from './ModernCard';
 
 const ContactSection = () => {
   return (
@@ -20,7 +18,7 @@ const ContactSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Info */}
           <div className="space-y-8">
-            <ModernCard className="flex items-start gap-6">
+            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
               <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-7 h-7 text-white" />
               </div>
@@ -30,9 +28,9 @@ const ContactSection = () => {
                 <p className="text-gray-600">Prayagpokhari, Lagankhel</p>
                 <p className="text-gray-600">Lalitpur, Nepal</p>
               </div>
-            </ModernCard>
+            </div>
 
-            <ModernCard className="flex items-start gap-6">
+            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
               <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Phone className="w-7 h-7 text-white" />
               </div>
@@ -41,9 +39,9 @@ const ContactSection = () => {
                 <p className="text-gray-600">+977-1-5555555</p>
                 <p className="text-gray-600">+977-9801234567</p>
               </div>
-            </ModernCard>
+            </div>
 
-            <ModernCard className="flex items-start gap-6">
+            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
               <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Mail className="w-7 h-7 text-white" />
               </div>
@@ -52,9 +50,9 @@ const ContactSection = () => {
                 <p className="text-gray-600">info@excelinstitute.com</p>
                 <p className="text-gray-600">admission@excelinstitute.com</p>
               </div>
-            </ModernCard>
+            </div>
 
-            <ModernCard className="flex items-start gap-6">
+            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
               <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Clock className="w-7 h-7 text-white" />
               </div>
@@ -63,11 +61,11 @@ const ContactSection = () => {
                 <p className="text-gray-600">Sunday - Friday: 9:00 AM - 6:00 PM</p>
                 <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
               </div>
-            </ModernCard>
+            </div>
           </div>
 
           {/* Contact Form */}
-          <ModernCard>
+          <div className="p-8 bg-white rounded-2xl shadow">
             <h3 className="text-2xl font-bold text-gray-900 mb-8">Send us a Message</h3>
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -99,7 +97,7 @@ const ContactSection = () => {
                 Send Message
               </button>
             </form>
-          </ModernCard>
+          </div>
         </div>
       </div>
     </section>

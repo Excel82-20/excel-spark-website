@@ -71,28 +71,22 @@ export type Database = {
       }
       gallery_photos: {
         Row: {
-          caption: string | null
-          category: string | null
-          created_at: string
-          id: string
-          photo_url: string
-          updated_at: string
+          id: string;
+          photo_url: string;
+          created_at: string;
+          updated_at: string;
         }
         Insert: {
-          caption?: string | null
-          category?: string | null
-          created_at?: string
-          id?: string
-          photo_url: string
-          updated_at?: string
+          id?: string;
+          photo_url: string;
+          created_at?: string;
+          updated_at?: string;
         }
         Update: {
-          caption?: string | null
-          category?: string | null
-          created_at?: string
-          id?: string
-          photo_url?: string
-          updated_at?: string
+          id?: string;
+          photo_url?: string;
+          created_at?: string;
+          updated_at?: string;
         }
         Relationships: []
       }

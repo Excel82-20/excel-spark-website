@@ -1,15 +1,70 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const AnimatedNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+const AnimatedNavLink = ({ href, type, children }: { href: string; type: string; children: React.ReactNode }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const sectionId = 'hero-section';
+    if (location.pathname !== '/') {
+      navigate(`/#${sectionId}`);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleSectionClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const sectionId = href.replace('/#', '').replace('#', '');
+    if (location.pathname !== '/') {
+      navigate(`/#${sectionId}`);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.location.hash = `#${sectionId}`;
+      }
+    }
+  };
+
+  if (type === 'home') {
+    return (
+      <a
+        href="#hero-section"
+        onClick={handleHomeClick}
+        className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
+      >
+        <span>{children}</span>
+      </a>
+    );
+  } else if (type === 'section') {
+    return (
+      <a
+        href={`#${href.replace('/#', '').replace('#', '')}`}
+        onClick={handleSectionClick}
+        className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
+      >
+        <span>{children}</span>
+      </a>
+    );
+  }
   return (
-    <a
-      href={href}
+    <Link
+      to={href}
       className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
     >
       <span>{children}</span>
-    </a>
+    </Link>
   );
 };
 
@@ -17,6 +72,8 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -53,11 +110,11 @@ export function Navbar() {
 
   // Updated navigation links
   const navLinksData = [
-    { label: 'Home', href: '#hero', type: 'scroll' },
-    { label: 'About', href: '#about-section', type: 'scroll' },
-    { label: 'Courses', href: '/courses', type: 'page' },
-    { label: 'Team', href: '#testimonials', type: 'scroll' },
-    { label: 'Stories', href: '#testimonials', type: 'scroll' },
+    { label: 'Home', href: '/#hero-section', type: 'home' },
+    { label: 'About', href: '/#about-section', type: 'section' },
+    { label: 'Courses', href: '/#courses-section', type: 'section' },
+    { label: 'Stories', href: '/#testimonials-section', type: 'section' },
+    { label: 'Team', href: '/#team-section', type: 'section' },
     { label: 'Gallery', href: '/gallery', type: 'page' },
   ];
 
@@ -65,12 +122,12 @@ export function Navbar() {
   const contactButtonElement = (
     <div className="relative group w-full sm:w-auto">
       <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-gray-100 opacity-40 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
-      <a
-        href="/contact"
+      <Link
+        to="/contact"
         className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-gray-100 to-gray-300 rounded-full hover:from-gray-200 hover:to-gray-400 transition-all duration-200 w-full sm:w-auto flex items-center justify-center"
       >
         Contact
-      </a>
+      </Link>
     </div>
   );
 
@@ -79,22 +136,11 @@ export function Navbar() {
       <div className="flex items-center justify-between w-full gap-x-6 sm:gap-x-8">
         <div className="flex items-center">{logoElement}</div>
         <nav className="hidden sm:flex items-center space-x-4 sm:space-x-6 text-sm">
-          {navLinksData.map((link) =>
-            link.type === 'page' ? (
-              <AnimatedNavLink key={link.label} href={link.href}>
-                {link.label}
-              </AnimatedNavLink>
-            ) : (
-              <a
-                key={link.label}
-                href={link.href}
-                className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300 scroll-smooth"
-                style={{ scrollBehavior: 'smooth' }}
-              >
-                {link.label}
-              </a>
-            )
-          )}
+          {navLinksData.map((link) => (
+            <AnimatedNavLink key={link.label} href={link.href} type={link.type}>
+              {link.label}
+            </AnimatedNavLink>
+          ))}
         </nav>
         <div className="hidden sm:flex items-center gap-2 sm:gap-3">
           {contactButtonElement}
@@ -109,22 +155,57 @@ export function Navbar() {
       </div>
       <div className={`sm:hidden flex flex-col items-center w-full transition-all ease-in-out duration-300 overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100 pt-4' : 'max-h-0 opacity-0 pt-0 pointer-events-none'}`}>
         <nav className="flex flex-col items-center space-y-4 text-base w-full">
-          {navLinksData.map((link) =>
-            link.type === 'page' ? (
-              <a key={link.label} href={link.href} className="text-white hover:text-gray-300 transition-colors w-full text-center">
-                {link.label}
-              </a>
-            ) : (
+          {navLinksData.map((link) => (
+            link.type === 'home' ? (
               <a
                 key={link.label}
-                href={link.href}
-                className="text-white w-full text-center hover:text-gray-300 transition-colors scroll-smooth"
-                style={{ scrollBehavior: 'smooth' }}
+                href="#hero-section"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const sectionId = 'hero-section';
+                  if (location.pathname !== '/') {
+                    navigate(`/#${sectionId}`);
+                  } else {
+                    const el = document.getElementById(sectionId);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }
+                }}
+                className="text-white hover:text-gray-300 transition-colors w-full text-center"
               >
                 {link.label}
               </a>
+            ) : link.type === 'section' ? (
+              <a
+                key={link.label}
+                href={`#${link.href.replace('/#', '').replace('#', '')}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const sectionId = link.href.replace('/#', '').replace('#', '');
+                  if (location.pathname !== '/') {
+                    navigate(`/#${sectionId}`);
+                  } else {
+                    const el = document.getElementById(sectionId);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      window.location.hash = `#${sectionId}`;
+                    }
+                  }
+                }}
+                className="text-white hover:text-gray-300 transition-colors w-full text-center"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link key={link.label} to={link.href} className="text-white hover:text-gray-300 transition-colors w-full text-center">
+                {link.label}
+              </Link>
             )
-          )}
+          ))}
           {contactButtonElement}
         </nav>
       </div>
