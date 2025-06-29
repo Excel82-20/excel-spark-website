@@ -96,6 +96,36 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_photos: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number | null
+          photo_url: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number | null
+          photo_url: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number | null
+          photo_url?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       student_stories: {
         Row: {
           course_taken: string

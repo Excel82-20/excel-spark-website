@@ -32,7 +32,7 @@ const HeroSection = () => {
     queryKey: ['hero-photos'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('hero_photos' as any)
+        .from('hero_photos')
         .select('*')
         .order('order_index', { ascending: true });
       

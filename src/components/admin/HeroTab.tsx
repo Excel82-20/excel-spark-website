@@ -37,7 +37,7 @@ const HeroTab = () => {
     queryFn: async () => {
       console.log('Fetching hero photos...');
       const { data, error } = await supabase
-        .from('hero_photos' as any)
+        .from('hero_photos')
         .select('*')
         .order('order_index', { ascending: true });
       
@@ -93,7 +93,7 @@ const HeroTab = () => {
       
       const publicUrl = await uploadFile(file);
       const { data, error } = await supabase
-        .from('hero_photos' as any)
+        .from('hero_photos')
         .insert([{ 
           photo_url: publicUrl,
           title: title || null,
@@ -140,7 +140,7 @@ const HeroTab = () => {
       }
       
       const { data, error } = await supabase
-        .from('hero_photos' as any)
+        .from('hero_photos')
         .update({ 
           photo_url: photoUrl,
           title: title || null,
@@ -178,7 +178,7 @@ const HeroTab = () => {
       
       await deleteFile(photo.photo_url);
       const { error } = await supabase
-        .from('hero_photos' as any)
+        .from('hero_photos')
         .delete()
         .eq('id', photo.id);
       
