@@ -2,7 +2,14 @@
 import React from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FacebookIcon, FrameIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from 'lucide-react';
+import { FrameIcon, FacebookIcon, InstagramIcon } from 'lucide-react';
+
+// TikTok is not in lucide-react, so use a simple SVG inline for TikTok
+const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
+	<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" {...props}>
+		<path d="M9 8v8a3 3 0 1 0 3-3h0V3h3a5 5 0 0 0 5 5" />
+	</svg>
+);
 
 interface FooterLink {
 	title: string;
@@ -46,53 +53,40 @@ const footerLinks: FooterSection[] = [
 	{
 		label: 'Social Links',
 		links: [
-			{ title: 'Facebook', href: '#', icon: FacebookIcon },
-			{ title: 'Instagram', href: '#', icon: InstagramIcon },
-			{ title: 'Youtube', href: '#', icon: YoutubeIcon },
-			{ title: 'LinkedIn', href: '#', icon: LinkedinIcon },
+			{ title: 'Facebook', href: 'https://www.facebook.com/share/1Af4gq2fZR/', icon: FacebookIcon },
+			{ title: 'Instagram', href: 'https://www.instagram.com/_excelinstitute?igsh=MWE4bnA3cXo1ZjEzYg==', icon: InstagramIcon },
+			{ title: 'TikTok', href: 'https://www.tiktok.com/@_excelinstitute?_t=ZS-8xbLsBZsbtA&_r=1', icon: TikTokIcon },
 		],
 	},
 ];
 
 export function Footer() {
 	return (
-		<footer className="md:rounded-t-6xl relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center rounded-t-4xl border-t bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)] px-6 py-12 lg:py-16">
-			<div className="bg-foreground/20 absolute top-0 right-1/2 left-1/2 h-px w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full blur" />
-
-			<div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8">
-				<AnimatedContainer className="space-y-4">
-					<FrameIcon className="size-8" />
-					<p className="text-muted-foreground mt-8 text-sm md:mt-0">
-						© {new Date().getFullYear()} Asme. All rights reserved.
-					</p>
-				</AnimatedContainer>
-
-				<div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
-					{footerLinks.map((section, index) => (
-						<AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
-							<div className="mb-10 md:mb-0">
-								<h3 className="text-xs">{section.label}</h3>
-								<ul className="text-muted-foreground mt-4 space-y-2 text-sm">
-									{section.links.map((link) => (
-										<li key={link.title}>
-											<a
-												href={link.href}
-												className="hover:text-foreground inline-flex items-center transition-all duration-300"
-											>
-												{link.icon && <link.icon className="me-1 size-4" />}
-												{link.title}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						</AnimatedContainer>
-					))}
-				</div>
+		<footer className="w-full flex flex-col items-center justify-center bg-white py-12 px-4 border-t">
+			{/* Logo */}
+			<div className="flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-8">
+				<FrameIcon className="w-8 h-8 text-black" />
 			</div>
+			{/* Nav Links */}
+			<nav className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 w-full max-w-xs sm:max-w-none">
+				<a href="/#hero-section" className="text-black text-base hover:underline">Home</a>
+				<a href="/#courses-section" className="text-black text-base hover:underline">Courses</a>
+				<a href="/#testimonials-section" className="text-black text-base hover:underline">Stories</a>
+				<a href="/#team-section" className="text-black text-base hover:underline">Team</a>
+				<a href="/gallery" className="text-black text-base hover:underline">Gallery</a>
+				<a href="/#contact-section" className="text-black text-base hover:underline">Contact</a>
+			</nav>
+			{/* Social Icons */}
+			<div className="flex space-x-6 mb-8">
+				<a href="https://www.facebook.com/share/1Af4gq2fZR/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-black hover:bg-gray-100 transition"><FacebookIcon className="w-5 h-5" /></a>
+				<a href="https://www.instagram.com/_excelinstitute?igsh=MWE4bnA3cXo1ZjEzYg==" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-black hover:bg-gray-100 transition"><InstagramIcon className="w-5 h-5" /></a>
+				<a href="https://www.tiktok.com/@_excelinstitute?_t=ZS-8xbLsBZsbtA&_r=1" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-black hover:bg-gray-100 transition"><TikTokIcon className="w-5 h-5" /></a>
+			</div>
+			{/* Copyright */}
+			<p className="text-gray-500 text-sm">© {new Date().getFullYear()} Your Company. All rights reserved.</p>
 		</footer>
 	);
-};
+}
 
 type ViewAnimationProps = {
 	delay?: number;

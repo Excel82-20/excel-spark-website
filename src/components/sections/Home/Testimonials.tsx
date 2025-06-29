@@ -4,58 +4,58 @@ import { motion } from "motion/react";
 
 const testimonials = [
   {
-    text: "This ERP revolutionized our operations, streamlining finance and inventory. The cloud-based platform keeps us productive, even remotely.",
+    text: "I used to memorize everything, now I actually understand what I study. The teaching methods here are completely different.",
     image: "https://randomuser.me/api/portraits/women/1.jpg",
-    name: "Briana Patton",
-    role: "Operations Manager",
+    name: "Sneha Thapa",
+    role: "High School Student",
   },
   {
-    text: "Implementing this ERP was smooth and quick. The customizable, user-friendly interface made team training effortless.",
+    text: "Excel helped me get ready for my first job. The computer classes were actually useful and practical.",
     image: "https://randomuser.me/api/portraits/men/2.jpg",
-    name: "Bilal Ahmed",
-    role: "IT Manager",
+    name: "Sagar Tamang",
+    role: "Computer Course Student",
   },
   {
-    text: "The support team is exceptional, guiding us through setup and providing ongoing assistance, ensuring our satisfaction.",
+    text: "My English improved so much! The teachers here don't just teach grammar, they make you confident in speaking.",
     image: "https://randomuser.me/api/portraits/women/3.jpg",
-    name: "Saman Malik",
-    role: "Customer Support Lead",
+    name: "Priya Gurung",
+    role: "English Language Student",
   },
   {
-    text: "This ERP's seamless integration enhanced our business operations and efficiency. Highly recommend for its intuitive interface.",
+    text: "I was struggling with math in school, but the way they explain concepts here changed everything for me.",
     image: "https://randomuser.me/api/portraits/men/4.jpg",
-    name: "Omar Raza",
-    role: "CEO",
+    name: "Rahul Magar",
+    role: "High School Student",
   },
   {
-    text: "Its robust features and quick support have transformed our workflow, making us significantly more efficient.",
+    text: "The computer practical sessions helped me understand programming better. Now I can code confidently.",
     image: "https://randomuser.me/api/portraits/women/5.jpg",
-    name: "Zainab Hussain",
-    role: "Project Manager",
+    name: "Anjali Rai",
+    role: "Computer Course Student",
   },
   {
-    text: "The smooth implementation exceeded expectations. It streamlined processes, improving overall business performance.",
+    text: "My confidence improved so much after joining here. The teachers really care about each student's progress.",
     image: "https://randomuser.me/api/portraits/women/6.jpg",
-    name: "Aliza Khan",
-    role: "Business Analyst",
+    name: "Meera Limbu",
+    role: "English Language Student",
   },
   {
-    text: "Our business functions improved with a user-friendly design and positive customer feedback.",
+    text: "The study materials and practice tests are excellent. They helped me prepare properly for my board exams.",
     image: "https://randomuser.me/api/portraits/men/7.jpg",
-    name: "Farhan Siddiqui",
-    role: "Marketing Director",
+    name: "Vikram Chhetri",
+    role: "High School Student",
   },
   {
-    text: "They delivered a solution that exceeded expectations, understanding our needs and enhancing our operations.",
+    text: "I never thought I could understand programming, but the step-by-step approach made it easy.",
     image: "https://randomuser.me/api/portraits/women/8.jpg",
-    name: "Sana Sheikh",
-    role: "Sales Manager",
+    name: "Kavya Bista",
+    role: "Computer Course Student",
   },
   {
-    text: "Using this ERP, our online presence and conversions significantly improved, boosting business performance.",
+    text: "The small batch sizes ensure individual attention. Every doubt gets cleared immediately.",
     image: "https://randomuser.me/api/portraits/men/9.jpg",
-    name: "Hassan Ali",
-    role: "E-commerce Manager",
+    name: "Arjun Karki",
+    role: "High School Student",
   },
 ];
 
@@ -65,24 +65,20 @@ const thirdColumn = testimonials.slice(6, 9);
 
 const Testimonials = () => {
   return (
-    <section id="testimonials-section" className="bg-background my-20 relative">
-      <div className="container z-10 mx-auto">
+    <section id="testimonials-section" className="bg-background my-20 py-20">
+      <div className="container z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
+          className="flex flex-col items-center justify-center max-w-2xl mx-auto"
         >
-          <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-lg">Testimonials</div>
+          <div className="flex justify-center mb-2">
+            <div className="border py-1 px-4 rounded-lg text-sm font-medium text-gray-700 bg-white/80">Testimonials</div>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter mt-5">
-            What our users say
-          </h2>
-          <p className="text-center mt-5 opacity-75">
-            See what our customers have to say about us.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mt-2 mb-4 text-center">Student Reviews</h2>
+          <p className="text-base md:text-lg text-gray-600 text-center mb-8">Hear from our students about their learning journey with us.</p>
         </motion.div>
         <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
           <TestimonialsColumn testimonials={firstColumn} duration={15} />

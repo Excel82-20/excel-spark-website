@@ -1,59 +1,155 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { GraduationCap, Star, Calendar, BookOpen, RotateCcw, Users } from 'lucide-react';
 
 const AboutSection = () => {
+  const [animatedNumbers, setAnimatedNumbers] = useState<{ [key: string]: number }>({});
+
+  const stats = [
+    { 
+      icon: GraduationCap, 
+      number: 4000, 
+      suffix: '+',
+      label: 'Students taught across all courses' 
+    },
+    { 
+      icon: Star, 
+      number: 4.9, 
+      suffix: '',
+      label: 'Stars on Google Reviews' 
+    },
+    { 
+      icon: Calendar, 
+      number: 7, 
+      suffix: '+',
+      label: 'Years of teaching experience in Lagankhel' 
+    },
+    { 
+      icon: BookOpen, 
+      number: 20, 
+      suffix: '+',
+      label: 'Different courses to choose from' 
+    },
+    { 
+      icon: RotateCcw, 
+      number: 85, 
+      suffix: '%',
+      label: 'Of students return for another course' 
+    },
+    { 
+      icon: Users, 
+      number: 10, 
+      suffix: '+',
+      label: 'Young, experienced teachers.' 
+    }
+  ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            stats.forEach((stat) => {
+              const key = `${stat.number}${stat.suffix}`;
+              animateNumber(stat.number, key);
+            });
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const animateNumber = (target: number, key: string) => {
+    const duration = 2000;
+    const steps = 60;
+    const increment = target / steps;
+    let current = 0;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      setAnimatedNumbers(prev => ({
+        ...prev,
+        [key]: target === 4.9 ? Number(current.toFixed(1)) : Math.floor(current)
+      }));
+    }, duration / steps);
+  };
+
   return (
-    <section className="min-h-screen flex items-center py-32">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          {/* Content */}
-          <div className="cinematic-slide-up">
-            <h2 className="text-5xl md:text-7xl font-bold mb-12 leading-tight">
-              Excellence in
-              <br />
-              <span className="italic">Education</span>
-            </h2>
-            
-            <div className="space-y-8 text-lg md:text-xl text-black/70 font-light leading-relaxed">
-              <p>
-                For over a decade, Excel Institute has been at the forefront of technological education, 
-                shaping minds and building futures in the ever-evolving digital landscape.
-              </p>
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        {/* About Us Text Section */}
+        <div className="mb-8 flex flex-col gap-4 items-start">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2 leading-tight">About Us</h2>
+          <p className="max-w-2xl text-gray-700 text-base md:text-lg font-normal leading-relaxed md:leading-loose">
+            At Excel Institute, we make learning practical, personal, and actually fun. Whether you're here to master computers, 
+            improve your English, or get academic support, we've got your back. Our young and relatable teachers focus on real understanding — not just memorization — so you can learn with confidence and use your skills in real life.
+          </p>
+        </div>
+
+        {/* Stats Showcase Section */}
+        <div className="cinematic-slide-up stats-section mt-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {stats.map((stat, index) => {
+              const IconComponent = stat.icon;
+              const key = `${stat.number}${stat.suffix}`;
+              const displayNumber = animatedNumbers[key] !== undefined ? animatedNumbers[key] : 0;
               
-              <p>
-                Our approach combines theoretical foundation with practical application, ensuring 
-                our graduates are not just knowledgeable, but industry-ready from day one.
-              </p>
-              
-              <p>
-                We believe in the power of personalized learning, small class sizes, and 
-                mentorship that extends beyond the classroom.
-              </p>
-            </div>
-            
-            <div className="mt-12">
-              <Link
-                to="/about"
-                className="group inline-flex items-center gap-4 text-lg font-medium uppercase tracking-widest hover:opacity-70 transition-opacity"
-              >
-                Learn More About Us
-                <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
-              </Link>
-            </div>
-          </div>
-          
-          {/* Image */}
-          <div className="cinematic-slide-up" style={{ animationDelay: '0.3s' }}>
-            <div className="relative aspect-[4/5] overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                alt="Student learning"
-                className="w-full h-full object-cover cinematic-scale"
-              />
-              <div className="absolute inset-0 bg-black/10"></div>
-            </div>
+              return (
+                <div 
+                  key={index} 
+                  className="cinematic-slide-up group"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-blue-200 h-full flex flex-col justify-between min-h-[160px]">
+                    <div className="flex justify-center mb-4">
+                      <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
+                        <IconComponent size={20} className="text-blue-600" />
+                      </div>
+                    </div>
+                    
+                    <div className="text-2xl md:text-3xl font-bold mb-2 text-gray-900 text-center">
+                      {stat.number === 4.9 ? (
+                        <div className="flex flex-col items-center justify-center gap-1">
+                          <span>{displayNumber}</span>
+                          <div className="flex gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={16}
+                                className={`${
+                                  i < Math.floor(displayNumber) 
+                                    ? 'text-yellow-400 fill-current' 
+                                    : i < displayNumber 
+                                    ? 'text-yellow-400 fill-current' 
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        `${displayNumber}${stat.suffix}`
+                      )}
+                    </div>
+                    
+                    <div className="text-xs text-gray-600 leading-relaxed text-center flex-1 flex items-center justify-center">
+                      {stat.label}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

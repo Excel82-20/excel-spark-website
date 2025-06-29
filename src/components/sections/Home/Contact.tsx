@@ -1,102 +1,77 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
+import { FaWhatsapp, FaViber } from 'react-icons/fa';
+
+const buildingImage = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'; // Replace with your building image if available
 
 const ContactSection = () => {
   return (
-    <section className="py-32 bg-gradient-to-br from-gray-50 to-blue-50/30">
+    <section id="contact-section" className="pt-8 md:pt-16 pb-24 bg-gradient-to-br from-gray-50 to-blue-50/30">
       <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Get In <span className="gradient-text">Touch</span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Feel free to drop by, call, or DM us! We'd love to hear from you and help you start your learning journey.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
-              <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
-                <p className="text-gray-600">Excel Institute</p>
-                <p className="text-gray-600">Prayagpokhari, Lagankhel</p>
-                <p className="text-gray-600">Lalitpur, Nepal</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
-              <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
-                <Phone className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Call Us</h3>
-                <p className="text-gray-600">+977-1-5555555</p>
-                <p className="text-gray-600">+977-9801234567</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
-              <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
-                <Mail className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
-                <p className="text-gray-600">info@excelinstitute.com</p>
-                <p className="text-gray-600">admission@excelinstitute.com</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
+          {/* Left: Contact Info and Map stacked, each takes 50% height */}
+          <div className="flex flex-col gap-8 md:gap-0">
+            <div className="rounded-xl bg-white shadow-md pt-2 pb-8 px-8 flex flex-col justify-center min-h-[180px]">
+              <h2 className="text-2xl md:text-3xl font-display font-semibold text-gray-900 mb-4 tracking-tight text-left">Contact Us</h2>
+              <div className="flex flex-col gap-4 w-full text-gray-700 items-start text-left">
+                <div className="flex items-center gap-3">
+                  <MapPin className="w-5 h-5 text-blue-500" />
+                  <a
+                    href="https://www.google.com/maps?q=Excel+Institute,+Prayagpokhari,+Lagankhel,+Lalitpur,+Nepal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-serif text-inherit hover:underline"
+                  >
+                    Prayagpokhari, Lagankhel, Lalitpur, Nepal
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-blue-500" />
+                  <span className="font-serif">+977 9769330417</span>
+                  <a
+                    href="https://wa.me/9779769330417"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="WhatsApp"
+                  >
+                    <FaWhatsapp className="w-5 h-5 text-green-500 hover:text-green-600 transition" />
+                  </a>
+                  <a
+                    href="viber://chat?number=+9779769330417"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Viber"
+                  >
+                    <FaViber className="w-5 h-5 text-purple-500 hover:text-purple-600 transition" />
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                  <a href="mailto:excelinstitute82@gmail.com" className="font-serif text-inherit hover:underline">excelinstitute82@gmail.com</a>
+                </div>
               </div>
             </div>
-
-            <div className="flex items-start gap-6 p-6 bg-white rounded-2xl shadow">
-              <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center flex-shrink-0">
-                <Clock className="w-7 h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Office Hours</h3>
-                <p className="text-gray-600">Sunday - Friday: 9:00 AM - 6:00 PM</p>
-                <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
-              </div>
+            <div className="rounded-xl bg-white shadow-md p-4 flex items-center justify-center min-h-[180px] h-full mb-4 md:mb-0 md:mt-4 md:h-[600px]">
+              <iframe
+                title="Excel Institute Location"
+                src="https://www.google.com/maps?q=Excel+Institute,+Prayagpokhari,+Lagankhel,+Lalitpur,+Nepal&output=embed&z=15"
+                width="100%"
+                height="100%"
+                style={{ border: 0, borderRadius: '0.75rem', minHeight: 400, height: '100%' }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
-
-          {/* Contact Form */}
-          <div className="p-8 bg-white rounded-2xl shadow">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8">Send us a Message</h3>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full px-4 py-4 bg-gray-50 border-0 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-4 py-4 bg-gray-50 border-0 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <input
-                type="text"
-                placeholder="Subject"
-                className="w-full px-4 py-4 bg-gray-50 border-0 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <textarea
-                placeholder="Your Message"
-                rows={6}
-                className="w-full px-4 py-4 bg-gray-50 border-0 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              ></textarea>
-              <button
-                type="submit"
-                className="w-full py-4 gradient-bg text-white font-semibold rounded-2xl hover-lift transition-all"
-              >
-                Send Message
-              </button>
-            </form>
+          {/* Right: Large Photo, matches left column height */}
+          <div className="rounded-xl bg-white shadow-md p-0 flex items-center justify-center h-full w-full">
+            <img
+              src={buildingImage}
+              alt="Excel Institute Building"
+              className="w-full h-full object-cover object-center rounded-xl"
+              style={{ minHeight: 400, height: '100%' }}
+            />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import Hero from '../components/sections/Home/Hero';
-import About from '../components/sections/Home/About';
+import HeroSection from '../components/sections/Home/HeroSection';
+import AboutSection from '../components/AboutSection';
 import { Courses } from '../components/sections/Home/Courses';
 import Testimonials from '../components/sections/Home/Testimonials';
 import { TeamSection } from '../components/sections/Home/TeamSection';
@@ -19,8 +19,8 @@ const Home = () => {
 
   return (
     <div className="bg-white">
-      <Hero />
-      <About />
+      <HeroSection />
+      <AboutSection />
       <Courses />
       <Testimonials />
       <TeamSection />

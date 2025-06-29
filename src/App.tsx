@@ -6,10 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout, { NavbarOnlyLayout } from "./components/Layout";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
-import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import CourseDetails from "./pages/CourseDetails";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ const App = () => (
           {/* Public routes with layout */}
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/gallery" element={<NavbarOnlyLayout><Gallery /></NavbarOnlyLayout>} />
-          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/course/:id" element={<Layout><CourseDetails /></Layout>} />
           <Route path="*" element={<Layout><NotFound /></Layout>} />
         </Routes>
       </BrowserRouter>

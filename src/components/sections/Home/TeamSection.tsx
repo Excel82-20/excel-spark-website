@@ -204,7 +204,10 @@ export const TeamSection = ({
   return (
     <section className="py-24 bg-background" id="team-section">
       <div className="max-w-4xl mx-auto px-4 md:px-8">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-20">Meet Our Team</h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Meet Our Team</h2>
+        <p className="text-lg text-gray-600 text-center mb-20 max-w-2xl mx-auto">
+          Say hello to our young, passionate team and instructors — the kind of teachers who make you say "Ohh now I get it."
+        </p>
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             {/* Images */}

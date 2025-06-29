@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,7 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'poppins': ['Poppins', 'sans-serif'],
+				serif: ['Alice', 'serif'],
+				display: ['Playfair Display', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -126,14 +126,24 @@ export default {
 					'0%, 30%': { opacity: '1', transform: 'translateY(0)' },
 					'35%, 65%': { opacity: '0', transform: 'translateY(-10px)' },
 					'70%, 100%': { opacity: '1', transform: 'translateY(0)' }
-				}
+				},
+				gradient: {
+					"0%": { backgroundPosition: "0% 50%" },
+					"50%": { backgroundPosition: "100% 50%" },
+					"100%": { backgroundPosition: "0% 50%" },
+				},
+				shimmer: {
+					"0%": { transform: "translateX(-100%)" },
+					"100%": { transform: "translateX(100%)" },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
 				'hero-slide-in': 'hero-slide-in 0.8s ease-out',
-				'text-cycle': 'text-cycle 2.5s infinite'
+				'text-cycle': 'text-cycle 2.5s infinite',
+				gradient: "gradient var(--animation-duration, 8s) linear infinite",
 			}
 		}
 	},

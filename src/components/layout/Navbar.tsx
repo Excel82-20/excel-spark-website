@@ -1,216 +1,229 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const AnimatedNavLink = ({ href, type, children }: { href: string; type: string; children: React.ReactNode }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+interface NavLink {
+  label: string;
+  href: string;
+  type: 'home' | 'section' | 'page';
+}
 
-  const handleHomeClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const sectionId = 'hero-section';
-    if (location.pathname !== '/') {
-      navigate(`/#${sectionId}`);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
-  };
-
-  const handleSectionClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const sectionId = href.replace('/#', '').replace('#', '');
-    if (location.pathname !== '/') {
-      navigate(`/#${sectionId}`);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.location.hash = `#${sectionId}`;
-      }
-    }
-  };
-
-  if (type === 'home') {
-    return (
-      <a
-        href="#hero-section"
-        onClick={handleHomeClick}
-        className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
-      >
-        <span>{children}</span>
-      </a>
-    );
-  } else if (type === 'section') {
-    return (
-      <a
-        href={`#${href.replace('/#', '').replace('#', '')}`}
-        onClick={handleSectionClick}
-        className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
-      >
-        <span>{children}</span>
-      </a>
-    );
-  }
-  return (
-    <Link
-      to={href}
-      className="relative inline-block h-5 flex items-center text-sm text-white transition-colors duration-200 hover:text-gray-300"
-    >
-      <span>{children}</span>
-    </Link>
-  );
-};
-
-export function Navbar() {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
-  const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  useEffect(() => {
-    if (shapeTimeoutRef.current) {
-      clearTimeout(shapeTimeoutRef.current);
-    }
-
-    if (isOpen) {
-      setHeaderShapeClass('rounded-xl');
-    } else {
-      shapeTimeoutRef.current = setTimeout(() => {
-        setHeaderShapeClass('rounded-full');
-      }, 300);
-    }
-
-    return () => {
-      if (shapeTimeoutRef.current) {
-        clearTimeout(shapeTimeoutRef.current);
-      }
-    };
-  }, [isOpen]);
-
-  const logoElement = (
-    <div className="relative w-5 h-5 flex items-center justify-center">
-      <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
-      <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 left-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-      <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 right-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-      <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 bottom-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
-    </div>
-  );
-
-  // Updated navigation links
-  const navLinksData = [
+  // Navigation links
+  const navLinks: NavLink[] = [
     { label: 'Home', href: '/#hero-section', type: 'home' },
-    { label: 'About', href: '/#about-section', type: 'section' },
     { label: 'Courses', href: '/#courses-section', type: 'section' },
     { label: 'Stories', href: '/#testimonials-section', type: 'section' },
     { label: 'Team', href: '/#team-section', type: 'section' },
     { label: 'Gallery', href: '/gallery', type: 'page' },
   ];
 
-  // Glowing Contact button
-  const contactButtonElement = (
-    <div className="relative group w-full sm:w-auto">
-      <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-gray-100 opacity-40 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
-      <Link
-        to="/contact"
-        className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-gray-100 to-gray-300 rounded-full hover:from-gray-200 hover:to-gray-400 transition-all duration-200 w-full sm:w-auto flex items-center justify-center"
-      >
-        Contact
-      </Link>
-    </div>
-  );
+  // Handle scroll effect for background and visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Set background when scrolled
+      setScrolled(currentScrollY > 20);
+      
+      // Hide/show navbar based on scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down - hide navbar
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show navbar
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (isOpen && !target.closest('.navbar-container')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  const handleNavClick = (link: NavLink) => {
+    setIsOpen(false);
+    
+    if (link.type === 'home') {
+      if (location.pathname !== '/') {
+        navigate('/#hero-section');
+      } else {
+        const element = document.getElementById('hero-section');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (link.type === 'section') {
+      const sectionId = link.href.replace('/#', '').replace('#', '');
+      if (location.pathname !== '/') {
+        navigate(`/#${sectionId}`);
+      } else {
+        const element = document.getElementById(sectionId);
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (link.type === 'page') {
+      navigate(link.href);
+    }
+  };
+
+  const handleContactClick = () => {
+    setIsOpen(false);
+    const element = document.getElementById('contact-section');
+    if (location.pathname !== '/') {
+      navigate('/#contact-section');
+    } else {
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <header className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center pl-6 pr-6 py-3 backdrop-blur-sm ${headerShapeClass} border border-[#333] bg-[#18181b]/95 w-[calc(100%-2rem)] sm:w-auto transition-[border-radius] duration-0 ease-in-out`}>
-      <div className="flex items-center justify-between w-full gap-x-6 sm:gap-x-8">
-        <div className="flex items-center">{logoElement}</div>
-        <nav className="hidden sm:flex items-center space-x-4 sm:space-x-6 text-sm">
-          {navLinksData.map((link) => (
-            <AnimatedNavLink key={link.label} href={link.href} type={link.type}>
-              {link.label}
-            </AnimatedNavLink>
-          ))}
-        </nav>
-        <div className="hidden sm:flex items-center gap-2 sm:gap-3">
-          {contactButtonElement}
+    <>
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Navbar */}
+      <nav className={`navbar-container fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/60 backdrop-blur-md shadow-lg border-b border-gray-200' 
+          : 'bg-transparent'
+      } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            
+            {/* Logo Text Only */}
+            <div className="flex items-center">
+              <span className={`font-bold text-lg lg:text-xl transition-colors duration-300 ${
+                scrolled ? 'text-gray-900' : 'text-white'
+              }`}>
+                Excel Institute
+              </span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <button
+                  key={link.label}
+                  onClick={() => handleNavClick(link)}
+                  className={`text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                    scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white/90 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              ))}
+              
+              {/* Contact Button - No Highlighting */}
+              <button
+                onClick={handleContactClick}
+                className={`text-sm font-medium transition-all duration-200 hover:scale-105 ${
+                  scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white/90 hover:text-white'
+                }`}
+              >
+                Contact
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100/10"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center items-center">
+                <span className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                  scrolled ? 'text-gray-900' : 'text-white'
+                } ${isOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'}`} />
+                <span className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                  scrolled ? 'text-gray-900' : 'text-white'
+                } ${isOpen ? 'opacity-0' : 'opacity-100'}`} />
+                <span className={`block w-5 h-0.5 bg-current transition-all duration-300 ${
+                  scrolled ? 'text-gray-900' : 'text-white'
+                } ${isOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'}`} />
+              </div>
+            </button>
+          </div>
         </div>
-        <button className="sm:hidden flex items-center justify-center w-8 h-8 text-white focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
-          {isOpen ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-          )}
-        </button>
-      </div>
-      <div className={`sm:hidden flex flex-col items-center w-full transition-all ease-in-out duration-300 overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100 pt-4' : 'max-h-0 opacity-0 pt-0 pointer-events-none'}`}>
-        <nav className="flex flex-col items-center space-y-4 text-base w-full">
-          {navLinksData.map((link) => (
-            link.type === 'home' ? (
-              <a
-                key={link.label}
-                href="#hero-section"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const sectionId = 'hero-section';
-                  if (location.pathname !== '/') {
-                    navigate(`/#${sectionId}`);
-                  } else {
-                    const el = document.getElementById(sectionId);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  }
+
+        {/* Mobile Menu */}
+        <div className={`lg:hidden transition-all duration-300 ease-in-out ${
+          isOpen 
+            ? 'max-h-screen opacity-100 visible' 
+            : 'max-h-0 opacity-0 invisible'
+        }`}>
+          <div className="bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-xl">
+            <div className="px-4 py-6 space-y-4">
+              {navLinks.map((link, index) => (
+                <button
+                  key={link.label}
+                  onClick={() => handleNavClick(link)}
+                  className={`w-full text-left py-3 px-4 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200 font-medium transform ${
+                    isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                  }`}
+                  style={{
+                    transitionDelay: `${index * 100}ms`
+                  }}
+                >
+                  {link.label}
+                </button>
+              ))}
+              
+              {/* Mobile Contact Button - No Highlighting */}
+              <button
+                onClick={handleContactClick}
+                className={`w-full text-left py-3 px-4 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-200 font-medium transform ${
+                  isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}
+                style={{
+                  transitionDelay: `${navLinks.length * 100}ms`
                 }}
-                className="text-white hover:text-gray-300 transition-colors w-full text-center"
               >
-                {link.label}
-              </a>
-            ) : link.type === 'section' ? (
-              <a
-                key={link.label}
-                href={`#${link.href.replace('/#', '').replace('#', '')}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const sectionId = link.href.replace('/#', '').replace('#', '');
-                  if (location.pathname !== '/') {
-                    navigate(`/#${sectionId}`);
-                  } else {
-                    const el = document.getElementById(sectionId);
-                    if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                      window.location.hash = `#${sectionId}`;
-                    }
-                  }
-                }}
-                className="text-white hover:text-gray-300 transition-colors w-full text-center"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link key={link.label} to={link.href} className="text-white hover:text-gray-300 transition-colors w-full text-center">
-                {link.label}
-              </Link>
-            )
-          ))}
-          {contactButtonElement}
-        </nav>
-      </div>
-    </header>
+                Contact
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </>
   );
-}
+};
 
 export default Navbar;
