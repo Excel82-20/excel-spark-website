@@ -91,7 +91,7 @@ const AboutSection = () => {
         {/* About Us Text Section */}
         <div className="mb-8 flex flex-col gap-4 items-start">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2 leading-tight">About Us</h2>
-          <p className="max-w-2xl text-gray-700 text-base md:text-lg font-normal leading-relaxed md:leading-loose">
+          <p className="text-gray-700 text-base md:text-lg font-normal leading-relaxed md:leading-loose">
             At Excel Institute, we make learning practical, personal, and actually fun. Whether you're here to master computers, 
             improve your English, or get academic support, we've got your back. Our young and relatable teachers focus on real understanding — not just memorization — so you can learn with confidence and use your skills in real life.
           </p>

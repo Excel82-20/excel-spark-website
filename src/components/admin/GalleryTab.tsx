@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -229,81 +228,60 @@ const GalleryTab = () => {
     setIsDialogOpen(true);
   };
 
-  if (isLoading) return <div className="text-white">Loading gallery...</div>;
+  if (isLoading) return <div className="text-gray-700">Loading gallery photos...</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Manage Gallery</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Manage Gallery</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={handleAddNew} className="bg-purple-600 hover:bg-purple-700">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
               <Plus className="w-4 h-4 mr-2" />
               Add Photo
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-slate-800 border-slate-700">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-white">
+              <DialogTitle className="text-gray-900">
                 {editingPhoto ? 'Edit Photo' : 'Add New Photo'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="file" className="text-white">Photo File</Label>
-                <Input
-                  id="file"
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  className="bg-slate-700 border-slate-600 text-white"
-                  required={!editingPhoto}
-                />
-                {editingPhoto && (
-                  <p className="text-sm text-slate-400 mt-1">Leave empty to keep current image</p>
-                )}
-              </div>
-              
-              <div>
-                <Label htmlFor="caption" className="text-white">Caption (Optional)</Label>
-                <Input
-                  id="caption"
-                  value={caption}
-                  onChange={(e) => setCaption(e.target.value)}
-                  placeholder="Enter photo caption"
-                  className="bg-slate-700 border-slate-600 text-white"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="category" className="text-white">Category (Optional)</Label>
-                <Input
-                  id="category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  placeholder="Enter photo category"
-                  className="bg-slate-700 border-slate-600 text-white"
-                />
-              </div>
-              
-              <div className="flex gap-2">
-                <Button 
-                  type="submit" 
-                  className="bg-purple-600 hover:bg-purple-700"
-                  disabled={isUploading}
+              <Input
+                type="file"
+                ref={fileInputRef}
+                onChange={e => setFile(e.target.files?.[0] || null)}
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                accept="image/*"
+              />
+              <Input
+                placeholder="Caption (optional)"
+                value={caption}
+                onChange={e => setCaption(e.target.value)}
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+              />
+              <Input
+                placeholder="Category (optional)"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+              />
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCloseDialog}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
-                  {isUploading ? (
-                    <>
-                      <Upload className="w-4 h-4 mr-2 animate-spin" />
-                      {editingPhoto ? 'Updating...' : 'Uploading...'}
-                    </>
-                  ) : (
-                    editingPhoto ? 'Update' : 'Create'
-                  )}
-                </Button>
-                <Button type="button" variant="outline" onClick={handleCloseDialog}>
                   Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isUploading || createMutation.isPending || updateMutation.isPending}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  {isUploading || createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Photo'}
                 </Button>
               </div>
             </form>
@@ -311,51 +289,39 @@ const GalleryTab = () => {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {photos?.map((photo) => (
-          <div key={photo.id} className="bg-slate-700/50 rounded-lg overflow-hidden">
-            <img
-              src={photo.photo_url}
-              alt={photo.caption || "Gallery photo"}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              {photo.caption && (
-                <p className="text-white text-sm mb-2">{photo.caption}</p>
-              )}
-              {photo.category && (
-                <p className="text-slate-400 text-xs mb-3">Category: {photo.category}</p>
-              )}
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleEdit(photo)}
-                  className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleDelete(photo)}
-                  className="text-red-400 border-red-400 hover:bg-red-400 hover:text-white"
-                  disabled={deleteMutation.isPending}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {photos && photos.length > 0 ? (
+          photos.map((photo) => (
+            <div key={photo.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col items-center">
+              <img src={photo.photo_url} alt={photo.caption || 'Gallery Photo'} className="w-full h-48 object-cover rounded-lg border border-gray-100 mb-4" />
+              <div className="w-full">
+                <h3 className="text-md font-semibold text-gray-900 truncate">{photo.caption || 'Untitled'}</h3>
+                <p className="text-xs text-gray-500 mb-2">{photo.category}</p>
+                <div className="flex space-x-2 mt-2">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleEdit(photo)}
+                    className="text-green-600 border border-green-100 hover:bg-green-50"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleDelete(photo)}
+                    className="text-red-500 border border-red-100 hover:bg-red-50"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-gray-500 text-center py-12 col-span-full">No photos found.</div>
+        )}
       </div>
-      
-      {photos?.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-slate-400 text-lg">No photos in gallery yet.</p>
-          <p className="text-slate-500 text-sm">Click "Add Photo" to upload your first image.</p>
-        </div>
-      )}
     </div>
   );
 };

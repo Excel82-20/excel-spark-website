@@ -91,7 +91,7 @@ const HeroSection = () => {
             </GradientText>
           </h1>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-10 text-left font-normal">
-          At Excel Institute, we don’t just teach — we explain, support, and help you grow with real skills you can use in school, work, and life.
+          At Excel Institute, we don't just teach — we explain, support, and help you grow with real skills you can use in school, work, and life.
           </p>
           <motion.a
             href="#courses-section"

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -147,22 +146,22 @@ const TeamTab = () => {
     });
   };
 
-  if (isLoading) return <div className="text-white">Loading team members...</div>;
+  if (isLoading) return <div className="text-gray-700">Loading team members...</div>;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Manage Team</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Manage Team</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-purple-600 hover:bg-purple-700">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
               <Plus className="w-4 h-4 mr-2" />
               Add Team Member
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-slate-800 border-slate-700 max-w-2xl">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-white">
+              <DialogTitle className="text-gray-900">
                 {editingMember ? 'Edit Team Member' : 'Add New Team Member'}
               </DialogTitle>
             </DialogHeader>
@@ -172,14 +171,14 @@ const TeamTab = () => {
                   placeholder="Full Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   required
                 />
                 <Input
                   placeholder="Role/Position"
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                   required
                 />
               </div>
@@ -187,7 +186,7 @@ const TeamTab = () => {
                 placeholder="Bio/Description"
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="bg-slate-700 border-slate-600 text-white"
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                 rows={3}
                 required
               />
@@ -195,28 +194,37 @@ const TeamTab = () => {
                 placeholder="Photo URL"
                 value={formData.photo_url}
                 onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
-                className="bg-slate-700 border-slate-600 text-white"
+                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
               />
               <div className="grid grid-cols-2 gap-4">
                 <Input
-                  placeholder="Facebook Username"
+                  placeholder="Facebook Link"
                   value={formData.facebook}
                   onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                 />
                 <Input
-                  placeholder="Instagram Username"
+                  placeholder="Instagram Link"
                   value={formData.instagram}
                   onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                  className="bg-slate-700 border-slate-600 text-white"
+                  className="border-gray-300 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
-              <div className="flex gap-2">
-                <Button type="submit" className="bg-purple-600 hover:bg-purple-700">
-                  {editingMember ? 'Update' : 'Create'}
-                </Button>
-                <Button type="button" variant="outline" onClick={handleCloseDialog}>
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleCloseDialog}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                >
                   Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={createMutation.isPending || updateMutation.isPending}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  {createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Member'}
                 </Button>
               </div>
             </form>
@@ -224,58 +232,64 @@ const TeamTab = () => {
         </Dialog>
       </div>
 
-      <div className="grid gap-4">
-        {teamMembers?.map((member) => (
-          <div key={member.id} className="bg-slate-700/50 rounded-lg p-4 flex justify-between items-start">
-            <div className="flex gap-4 flex-1">
-              {member.photo_url && (
-                <img 
-                  src={member.photo_url} 
-                  alt={member.name}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-              )}
-              <div className="flex-1">
-                <h3 className="font-semibold text-white">{member.name}</h3>
-                <p className="text-purple-400 text-sm">{member.role}</p>
-                <p className="text-slate-300 text-sm mt-2">{member.bio}</p>
-                {member.social_links && (
-                  <div className="flex gap-2 mt-2 text-xs text-slate-400">
-                    {member.social_links.facebook && <span>FB: {member.social_links.facebook}</span>}
-                    {member.social_links.instagram && <span>IG: {member.social_links.instagram}</span>}
+      {/* Team Members List */}
+      <div className="space-y-6">
+        {teamMembers && teamMembers.length > 0 ? (
+          teamMembers.map((member) => (
+            <div
+              key={member.id}
+              className="flex flex-col md:flex-row items-start md:items-center justify-between bg-white border border-gray-200 rounded-xl p-6 shadow-sm"
+            >
+              <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                {member.photo_url ? (
+                  <img
+                    src={member.photo_url}
+                    alt={member.name}
+                    className="w-16 h-16 rounded-full object-cover border border-gray-200"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xl font-bold border border-gray-200">
+                    {member.name.charAt(0)}
                   </div>
                 )}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+                  <p className="text-sm font-medium text-green-600">{member.role}</p>
+                  <p className="text-gray-600 text-sm mt-1 mb-1 max-w-2xl">{member.bio}</p>
+                  <div className="flex space-x-4 text-xs text-gray-400">
+                    {member.social_links?.facebook && (
+                      <span>FB: <a href={member.social_links.facebook} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">{member.social_links.facebook.replace('https://facebook.com/', '')}</a></span>
+                    )}
+                    {member.social_links?.instagram && (
+                      <span>IG: <a href={member.social_links.instagram} className="text-pink-600 hover:underline" target="_blank" rel="noopener noreferrer">{member.social_links.instagram.replace('https://instagram.com/', '')}</a></span>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => handleEdit(member)}
+                  className="text-green-600 border border-green-100 hover:bg-green-50"
+                >
+                  <Edit className="w-5 h-5" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => handleDelete(member.id)}
+                  className="text-red-500 border border-red-100 hover:bg-red-50"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </Button>
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => handleEdit(member)}
-                className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white"
-              >
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => handleDelete(member.id)}
-                className="text-red-400 border-red-400 hover:bg-red-400 hover:text-white"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-gray-500 text-center py-12">No team members found.</div>
+        )}
       </div>
-
-      {!teamMembers?.length && (
-        <div className="text-center py-12">
-          <Users className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-          <p className="text-slate-400 text-lg">No team members found</p>
-          <p className="text-slate-500 text-sm">Add your first team member to get started</p>
-        </div>
-      )}
     </div>
   );
 };

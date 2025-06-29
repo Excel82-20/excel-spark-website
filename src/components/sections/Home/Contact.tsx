@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { FaWhatsapp, FaViber } from 'react-icons/fa';
 
-const buildingImage = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80'; // Replace with your building image if available
+const buildingImage = '/building.jpg'; // Local building image
 
 const ContactSection = () => {
   return (

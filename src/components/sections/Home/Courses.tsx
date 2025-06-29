@@ -137,7 +137,7 @@ const Courses = ({
       <div className="container mx-auto px-4">
         <div className="mb-8 flex flex-col gap-4 items-start">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2 leading-tight">{title}</h2>
-          <p className="max-w-2xl text-gray-700 text-base md:text-lg font-normal leading-relaxed md:leading-loose" style={{wordBreak: 'break-word'}}>
+          <p className="text-gray-700 text-base md:text-lg font-normal leading-relaxed md:leading-loose" style={{wordBreak: 'break-word'}}>
             {description}
           </p>
         </div>

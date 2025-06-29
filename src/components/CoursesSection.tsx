@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +29,7 @@ const CoursesSection = () => {
             <span className="italic">Craft</span>
           </h2>
           
-          <p className="text-xl md:text-2xl text-black/60 max-w-4xl mx-auto font-light">
+          <p className="text-xl md:text-2xl text-black/60 font-light">
             Carefully curated programs designed to transform beginners into industry professionals
           </p>
         </div>

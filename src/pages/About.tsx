@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Target, Users, Award } from 'lucide-react';
 
@@ -11,11 +10,11 @@ const About = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             About Excel Institute
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 mb-8">
             At Excel Institute, we believefgdf sfdgsdfgs fgsdfg in learning that actually makes sense. Our classes are practical, 
             our teachers are chill and smart, and our goal is to make you confident in what you learn.
           </p>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-500">
             We offer computer, language, and academic coaching classes that focus on projects, skills, 
             and concept clarity — not boring theory or memorization.
           </p>
