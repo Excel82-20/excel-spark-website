@@ -36,7 +36,11 @@ const HeroTab = () => {
     queryKey: ['hero-photos'],
     queryFn: async () => {
       console.log('Fetching hero photos...');
-      const { data, error } = await supabase.from('hero_photos').select('*').order('order_index', { ascending: true });
+      const { data, error } = await supabase
+        .from('hero_photos' as any)
+        .select('*')
+        .order('order_index', { ascending: true });
+      
       if (error) {
         console.error('Error fetching hero photos:', error);
         throw error;
@@ -88,12 +92,15 @@ const HeroTab = () => {
       console.log('Creating new hero photo...');
       
       const publicUrl = await uploadFile(file);
-      const { data, error } = await supabase.from('hero_photos').insert([{ 
-        photo_url: publicUrl,
-        title: title || null,
-        description: description || null,
-        order_index: orderIndex ? parseInt(orderIndex) : null
-      }]).select();
+      const { data, error } = await supabase
+        .from('hero_photos' as any)
+        .insert([{ 
+          photo_url: publicUrl,
+          title: title || null,
+          description: description || null,
+          order_index: orderIndex ? parseInt(orderIndex) : null
+        }])
+        .select();
       
       if (error) {
         console.error('Error inserting hero photo:', error);
@@ -132,7 +139,8 @@ const HeroTab = () => {
         await deleteFile(editingPhoto.photo_url);
       }
       
-      const { data, error } = await supabase.from('hero_photos')
+      const { data, error } = await supabase
+        .from('hero_photos' as any)
         .update({ 
           photo_url: photoUrl,
           title: title || null,
@@ -169,7 +177,10 @@ const HeroTab = () => {
       console.log('Deleting hero photo:', photo.id);
       
       await deleteFile(photo.photo_url);
-      const { error } = await supabase.from('hero_photos').delete().eq('id', photo.id);
+      const { error } = await supabase
+        .from('hero_photos' as any)
+        .delete()
+        .eq('id', photo.id);
       
       if (error) {
         console.error('Error deleting hero photo:', error);
@@ -249,7 +260,7 @@ const HeroTab = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label htmlFor="photo-upload" className="text-sm font-medium text-gray-700">
-                  Hero Photo *
+                  Hero Photo {!editingPhoto && '*'}
                 </Label>
                 <Input
                   id="photo-upload"
@@ -263,6 +274,11 @@ const HeroTab = () => {
                 <p className="text-xs text-gray-500 mt-1">
                   Recommended size: 1920x1080px or larger. Will be used in the hero slider.
                 </p>
+                {editingPhoto && (
+                  <p className="text-xs text-blue-600 mt-1">
+                    Leave empty to keep current photo, or select a new file to replace it.
+                  </p>
+                )}
               </div>
               
               <div>
@@ -357,20 +373,22 @@ const HeroTab = () => {
                 )}
                 <div className="flex space-x-2 mt-auto">
                   <Button
-                    size="icon"
+                    size="sm"
                     variant="ghost"
                     onClick={() => handleEdit(photo)}
-                    className="text-green-600 border border-green-100 hover:bg-green-50"
+                    className="text-green-600 border border-green-100 hover:bg-green-50 flex-1"
                   >
-                    <Edit className="w-5 h-5" />
+                    <Edit className="w-4 h-4 mr-1" />
+                    Edit
                   </Button>
                   <Button
-                    size="icon"
+                    size="sm"
                     variant="ghost"
                     onClick={() => handleDelete(photo)}
-                    className="text-red-500 border border-red-100 hover:bg-red-50"
+                    className="text-red-500 border border-red-100 hover:bg-red-50 flex-1"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    Delete
                   </Button>
                 </div>
               </div>
@@ -388,4 +406,4 @@ const HeroTab = () => {
   );
 };
 
-export default HeroTab; 
+export default HeroTab;

@@ -14,6 +14,14 @@ const fallbackImages = [
   "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370&auto=format&fit=crop",
 ];
 
+interface HeroPhoto {
+  id: string;
+  photo_url: string;
+  title?: string;
+  description?: string;
+  order_index?: number;
+}
+
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [pause, setPause] = useState(false);
@@ -24,7 +32,7 @@ const HeroSection = () => {
     queryKey: ['hero-photos'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('hero_photos')
+        .from('hero_photos' as any)
         .select('*')
         .order('order_index', { ascending: true });
       
@@ -33,13 +41,13 @@ const HeroSection = () => {
         return [];
       }
       
-      return data || [];
+      return (data || []) as HeroPhoto[];
     },
   });
 
   // Use database images if available, otherwise fallback images
   const images = heroPhotos && heroPhotos.length > 0 
-    ? heroPhotos.map(photo => photo.photo_url)
+    ? heroPhotos.map((photo: HeroPhoto) => photo.photo_url)
     : fallbackImages;
 
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
