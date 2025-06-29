@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -26,8 +27,10 @@ interface FormData {
   category: string;
   description: string;
   highlights: string;
-  image_url: string;
 }
+
+const BUCKET = 'images';
+const FOLDER = 'courses';
 
 const CoursesTab = () => {
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
@@ -36,12 +39,14 @@ const CoursesTab = () => {
     duration: '',
     category: '',
     description: '',
-    highlights: '',
-    image_url: ''
+    highlights: ''
   });
+  const [file, setFile] = useState<File | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -54,10 +59,49 @@ const CoursesTab = () => {
     },
   });
 
+  // Helper to upload file to Supabase Storage
+  const uploadFile = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${FOLDER}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+    
+    const { data, error } = await supabase.storage.from(BUCKET).upload(fileName, file, { upsert: false });
+    
+    if (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+    
+    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
+    return urlData.publicUrl;
+  };
+
+  // Helper to delete file from Supabase Storage
+  const deleteFile = async (imageUrl: string) => {
+    try {
+      const path = imageUrl.split(`/storage/v1/object/public/${BUCKET}/`)[1];
+      if (path) {
+        const { error } = await supabase.storage.from(BUCKET).remove([path]);
+        if (error) {
+          console.error('Error deleting file:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing file path for deletion:', error);
+    }
+  };
+
   const createMutation = useMutation({
     mutationFn: async (data: Omit<Course, 'id'>) => {
+      setIsUploading(true);
+      
+      let imageUrl = null;
+      if (file) {
+        imageUrl = await uploadFile(file);
+      }
+      
       const { error } = await supabase.from('courses').insert([{
         ...data,
+        image_url: imageUrl,
         highlights: data.highlights
       }]);
       if (error) throw error;
@@ -69,13 +113,32 @@ const CoursesTab = () => {
     },
     onError: (error) => {
       toast({ title: 'Error creating course', description: error.message, variant: 'destructive' });
+    },
+    onSettled: () => {
+      setIsUploading(false);
     }
   });
 
   const updateMutation = useMutation({
     mutationFn: async (data: Course) => {
+      if (!editingCourse) throw new Error('No course selected for editing');
+      
+      setIsUploading(true);
+      let imageUrl = editingCourse.image_url;
+      
+      // If new file is selected, upload it and delete old one
+      if (file) {
+        imageUrl = await uploadFile(file);
+        if (editingCourse.image_url) {
+          await deleteFile(editingCourse.image_url);
+        }
+      }
+      
       const { id, ...updateData } = data;
-      const { error } = await supabase.from('courses').update(updateData).eq('id', id);
+      const { error } = await supabase.from('courses').update({
+        ...updateData,
+        image_url: imageUrl
+      }).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -85,12 +148,18 @@ const CoursesTab = () => {
     },
     onError: (error) => {
       toast({ title: 'Error updating course', description: error.message, variant: 'destructive' });
+    },
+    onSettled: () => {
+      setIsUploading(false);
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('courses').delete().eq('id', id);
+    mutationFn: async (course: Course) => {
+      if (course.image_url) {
+        await deleteFile(course.image_url);
+      }
+      const { error } = await supabase.from('courses').delete().eq('id', course.id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -110,7 +179,7 @@ const CoursesTab = () => {
       category: formData.category,
       description: formData.description,
       highlights: formData.highlights.split(',').map(h => h.trim()),
-      image_url: formData.image_url
+      image_url: null
     };
 
     if (editingCourse) {
@@ -127,15 +196,15 @@ const CoursesTab = () => {
       duration: course.duration,
       category: course.category,
       description: course.description,
-      highlights: course.highlights.join(', '),
-      image_url: course.image_url || ''
+      highlights: course.highlights.join(', ')
     });
+    setFile(null);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (course: Course) => {
     if (window.confirm('Are you sure you want to delete this course?')) {
-      deleteMutation.mutate(id);
+      deleteMutation.mutate(course);
     }
   };
 
@@ -147,9 +216,10 @@ const CoursesTab = () => {
       duration: '',
       category: '',
       description: '',
-      highlights: '',
-      image_url: ''
+      highlights: ''
     });
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   // Filter and search courses
@@ -248,13 +318,15 @@ const CoursesTab = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Image URL</label>
+                <label className="text-sm font-medium text-gray-700">Course Image</label>
                 <Input
-                  placeholder="https://example.com/image.jpg"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={e => setFile(e.target.files?.[0] || null)}
                   className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                  accept="image/*"
                 />
+                <p className="text-xs text-gray-500">Upload an image for the course (optional)</p>
               </div>
               <div className="flex justify-end space-x-3 pt-4">
                 <Button
@@ -267,10 +339,10 @@ const CoursesTab = () => {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={createMutation.isPending || updateMutation.isPending}
+                  disabled={isUploading || createMutation.isPending || updateMutation.isPending}
                   className="bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Course'}
+                  {isUploading || createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Course'}
                 </Button>
               </div>
             </form>
@@ -331,13 +403,21 @@ const CoursesTab = () => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => handleDelete(course.id)}
+                      onClick={() => handleDelete(course)}
                       className="text-red-500 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
+                
+                {course.image_url && (
+                  <img
+                    src={course.image_url}
+                    alt={course.title}
+                    className="w-full h-32 object-cover rounded-lg mb-4"
+                  />
+                )}
                 
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{course.title}</h3>
                 <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>

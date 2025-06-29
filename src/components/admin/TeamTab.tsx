@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -21,10 +22,12 @@ interface FormData {
   name: string;
   role: string;
   bio: string;
-  photo_url: string;
   facebook: string;
   instagram: string;
 }
+
+const BUCKET = 'images';
+const FOLDER = 'team';
 
 const TeamTab = () => {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
@@ -32,11 +35,13 @@ const TeamTab = () => {
     name: '',
     role: '',
     bio: '',
-    photo_url: '',
     facebook: '',
     instagram: ''
   });
+  const [file, setFile] = useState<File | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -49,9 +54,50 @@ const TeamTab = () => {
     },
   });
 
+  // Helper to upload file to Supabase Storage
+  const uploadFile = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${FOLDER}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+    
+    const { data, error } = await supabase.storage.from(BUCKET).upload(fileName, file, { upsert: false });
+    
+    if (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+    
+    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
+    return urlData.publicUrl;
+  };
+
+  // Helper to delete file from Supabase Storage
+  const deleteFile = async (photoUrl: string) => {
+    try {
+      const path = photoUrl.split(`/storage/v1/object/public/${BUCKET}/`)[1];
+      if (path) {
+        const { error } = await supabase.storage.from(BUCKET).remove([path]);
+        if (error) {
+          console.error('Error deleting file:', error);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing file path for deletion:', error);
+    }
+  };
+
   const createMutation = useMutation({
     mutationFn: async (data: Omit<TeamMember, 'id'>) => {
-      const { error } = await supabase.from('team_members').insert([data]);
+      setIsUploading(true);
+      
+      let photoUrl = null;
+      if (file) {
+        photoUrl = await uploadFile(file);
+      }
+      
+      const { error } = await supabase.from('team_members').insert([{
+        ...data,
+        photo_url: photoUrl
+      }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -61,13 +107,32 @@ const TeamTab = () => {
     },
     onError: (error) => {
       toast({ title: 'Error adding team member', description: error.message, variant: 'destructive' });
+    },
+    onSettled: () => {
+      setIsUploading(false);
     }
   });
 
   const updateMutation = useMutation({
     mutationFn: async (data: TeamMember) => {
+      if (!editingMember) throw new Error('No member selected for editing');
+      
+      setIsUploading(true);
+      let photoUrl = editingMember.photo_url;
+      
+      // If new file is selected, upload it and delete old one
+      if (file) {
+        photoUrl = await uploadFile(file);
+        if (editingMember.photo_url) {
+          await deleteFile(editingMember.photo_url);
+        }
+      }
+      
       const { id, ...updateData } = data;
-      const { error } = await supabase.from('team_members').update(updateData).eq('id', id);
+      const { error } = await supabase.from('team_members').update({
+        ...updateData,
+        photo_url: photoUrl
+      }).eq('id', id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -77,12 +142,18 @@ const TeamTab = () => {
     },
     onError: (error) => {
       toast({ title: 'Error updating team member', description: error.message, variant: 'destructive' });
+    },
+    onSettled: () => {
+      setIsUploading(false);
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('team_members').delete().eq('id', id);
+    mutationFn: async (member: TeamMember) => {
+      if (member.photo_url) {
+        await deleteFile(member.photo_url);
+      }
+      const { error } = await supabase.from('team_members').delete().eq('id', member.id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -100,7 +171,7 @@ const TeamTab = () => {
       name: formData.name,
       role: formData.role,
       bio: formData.bio,
-      photo_url: formData.photo_url || null,
+      photo_url: null,
       social_links: {
         facebook: formData.facebook || null,
         instagram: formData.instagram || null
@@ -120,16 +191,16 @@ const TeamTab = () => {
       name: member.name,
       role: member.role,
       bio: member.bio,
-      photo_url: member.photo_url || '',
       facebook: member.social_links?.facebook || '',
       instagram: member.social_links?.instagram || ''
     });
+    setFile(null);
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (member: TeamMember) => {
     if (window.confirm('Are you sure you want to delete this team member?')) {
-      deleteMutation.mutate(id);
+      deleteMutation.mutate(member);
     }
   };
 
@@ -140,10 +211,11 @@ const TeamTab = () => {
       name: '',
       role: '',
       bio: '',
-      photo_url: '',
       facebook: '',
       instagram: ''
     });
+    setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   if (isLoading) return <div className="text-gray-700">Loading team members...</div>;
@@ -190,12 +262,17 @@ const TeamTab = () => {
                 rows={3}
                 required
               />
-              <Input
-                placeholder="Photo URL"
-                value={formData.photo_url}
-                onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
-                className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-              />
+              <div>
+                <label className="text-sm font-medium text-gray-700 block mb-2">Profile Photo</label>
+                <Input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={e => setFile(e.target.files?.[0] || null)}
+                  className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                  accept="image/*"
+                />
+                <p className="text-xs text-gray-500 mt-1">Upload a profile photo (optional)</p>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <Input
                   placeholder="Facebook Link"
@@ -221,10 +298,10 @@ const TeamTab = () => {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={createMutation.isPending || updateMutation.isPending}
+                  disabled={isUploading || createMutation.isPending || updateMutation.isPending}
                   className="bg-green-600 hover:bg-green-700 text-white"
                 >
-                  {createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Member'}
+                  {isUploading || createMutation.isPending || updateMutation.isPending ? 'Saving...' : 'Save Member'}
                 </Button>
               </div>
             </form>
@@ -278,7 +355,7 @@ const TeamTab = () => {
                 <Button
                   size="icon"
                   variant="ghost"
-                  onClick={() => handleDelete(member.id)}
+                  onClick={() => handleDelete(member)}
                   className="text-red-500 border border-red-100 hover:bg-red-50"
                 >
                   <Trash2 className="w-5 h-5" />

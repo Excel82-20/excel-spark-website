@@ -1,20 +1,47 @@
+
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { GradientText } from "@/components/ui/gradient-text";
 
-const images = [
+// Fallback images in case database is empty
+const fallbackImages = [
   "https://images.unsplash.com/photo-1460186136353-977e9d6085a1?q=80&w=2670&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370&auto=format&fit=crop",
-  // Add more institute images here
 ];
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [pause, setPause] = useState(false);
   const timer = useRef<NodeJS.Timeout | null>(null);
+
+  // Fetch hero photos from database
+  const { data: heroPhotos } = useQuery({
+    queryKey: ['hero-photos'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('hero_photos')
+        .select('*')
+        .order('order_index', { ascending: true });
+      
+      if (error) {
+        console.error('Error fetching hero photos:', error);
+        return [];
+      }
+      
+      return data || [];
+    },
+  });
+
+  // Use database images if available, otherwise fallback images
+  const images = heroPhotos && heroPhotos.length > 0 
+    ? heroPhotos.map(photo => photo.photo_url)
+    : fallbackImages;
+
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
     slides: { perView: 1 },

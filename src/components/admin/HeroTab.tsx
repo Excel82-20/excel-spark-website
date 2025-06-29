@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -224,15 +225,6 @@ const HeroTab = () => {
     setDescription('');
     setOrderIndex('');
     if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
-  const handleAddNew = () => {
-    setEditingPhoto(null);
-    setTitle('');
-    setDescription('');
-    setOrderIndex('');
-    setFile(null);
-    setIsDialogOpen(true);
   };
 
   if (isLoading) return <div className="text-gray-700">Loading hero photos...</div>;
