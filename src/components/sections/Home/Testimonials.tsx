@@ -23,31 +23,31 @@ const testimonials = [
   {
     text: "I am thankful to the English tutor — you taught really well. I improved my English grammar and speaking. Thank you for making a new language easier to understand. Most recommended for students seeking English language classes.",
     image: testimonialPhoto(3),
-    name: "Hema BK",
+    name: "Hemanta BK",
     role: "English Language Student",
   },
   {
     text: "I recently completed my computer diploma and it has been a very amazing experience. The teachers are very supportive and easy to communicate with. I love this institute and encourage everyone to keep going.",
     image: testimonialPhoto(4, "jpeg"),
-    name: "Sulochana Chand",
+    name: "Sara Shrestha",
     role: "Computer Diploma Student",
   },
   {
     text: "The English tuition class was awesome! It focused on grammar, writing, and speaking skills in a clear, simple way. The teacher was patient and made lessons fun. I improved my confidence in English fast!",
     image: testimonialPhoto(5),
-    name: "Don No 1",
+    name: "Anu Lamichhane",
     role: "English Language Student",
   },
   {
     text: "My experience at Excel Institute SEE 2082 was very positive. The teachers were experienced, supportive, and explained lessons clearly according to the SEE syllabus. Classes were well-managed and the study materials were helpful.",
     image: testimonialPhoto(6, "jpeg"),
-    name: "Kritan Tamrakar",
+    name: "Priti Syantang",
     role: "SEE Preparation Student",
   },
   {
     text: "Excel Institute is the best place for learning. Great teachers, helpful staff, and a friendly environment. Perfect for computer and English improvement. Highly recommended!",
     image: testimonialPhoto(7),
-    name: "Sajana",
+    name: "Sajan Shrestha",
     role: "Computer Course Student",
   },
   {
