@@ -2,60 +2,65 @@
 import { TestimonialsColumn } from "./TestimonialsColumn";
 import { motion } from "motion/react";
 
+type TestimonialPhotoFormat = "png" | "jpg" | "jpeg";
+
+const testimonialPhoto = (n: number, format: TestimonialPhotoFormat = "png") =>
+  `/assets/testimonials/photo${n}.${format}`;
+
 const testimonials = [
   {
-    text: "I used to memorize everything, now I actually understand what I study. The teaching methods here are completely different.",
-    image: "https://randomuser.me/api/portraits/women/1.jpg",
-    name: "Sneha Thapa",
-    role: "High School Student",
+    text: "I completed my MS Office training at Excel Institute, and I am extremely impressed with the quality of education provided. The course structure is well-organized, the trainers are highly skilled, and the practical sessions were very effective. I now feel confident using these applications professionally.",
+    image: testimonialPhoto(1),
+    name: "Kishim Ghimire",
+    role: "MS Office Course Student",
   },
   {
-    text: "Excel helped me get ready for my first job. The computer classes were actually useful and practical.",
-    image: "https://randomuser.me/api/portraits/men/2.jpg",
-    name: "Sagar Tamang",
-    role: "Computer Course Student",
+    text: "This computer class was incredibly practical. Instead of just learning theory, we spent most of our time on hands-on labs that felt like real-world scenarios. I walked away with a much better understanding.",
+    image: testimonialPhoto(2),
+    name: "Nacool Magar",
+    role: "Computer Diploma Student",
   },
   {
-    text: "My English improved so much! The teachers here don't just teach grammar, they make you confident in speaking.",
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
-    name: "Priya Gurung",
+    text: "I am thankful to the English tutor — you taught really well. I improved my English grammar and speaking. Thank you for making a new language easier to understand. Most recommended for students seeking English language classes.",
+    image: testimonialPhoto(3),
+    name: "Hema BK",
     role: "English Language Student",
   },
   {
-    text: "I was struggling with math in school, but the way they explain concepts here changed everything for me.",
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
-    name: "Rahul Magar",
-    role: "High School Student",
+    text: "I recently completed my computer diploma and it has been a very amazing experience. The teachers are very supportive and easy to communicate with. I love this institute and encourage everyone to keep going.",
+    image: testimonialPhoto(4, "jpeg"),
+    name: "Sulochana Chand",
+    role: "Computer Diploma Student",
   },
   {
-    text: "The computer practical sessions helped me understand programming better. Now I can code confidently.",
-    image: "https://randomuser.me/api/portraits/women/5.jpg",
-    name: "Anjali Rai",
-    role: "Computer Course Student",
-  },
-  {
-    text: "My confidence improved so much after joining here. The teachers really care about each student's progress.",
-    image: "https://randomuser.me/api/portraits/women/6.jpg",
-    name: "Meera Limbu",
+    text: "The English tuition class was awesome! It focused on grammar, writing, and speaking skills in a clear, simple way. The teacher was patient and made lessons fun. I improved my confidence in English fast!",
+    image: testimonialPhoto(5),
+    name: "Don No 1",
     role: "English Language Student",
   },
   {
-    text: "The study materials and practice tests are excellent. They helped me prepare properly for my board exams.",
-    image: "https://randomuser.me/api/portraits/men/7.jpg",
-    name: "Vikram Chhetri",
-    role: "High School Student",
+    text: "My experience at Excel Institute SEE 2082 was very positive. The teachers were experienced, supportive, and explained lessons clearly according to the SEE syllabus. Classes were well-managed and the study materials were helpful.",
+    image: testimonialPhoto(6, "jpeg"),
+    name: "Kritan Tamrakar",
+    role: "SEE Preparation Student",
   },
   {
-    text: "I never thought I could understand programming, but the step-by-step approach made it easy.",
-    image: "https://randomuser.me/api/portraits/women/8.jpg",
-    name: "Kavya Bista",
+    text: "Excel Institute is the best place for learning. Great teachers, helpful staff, and a friendly environment. Perfect for computer and English improvement. Highly recommended!",
+    image: testimonialPhoto(7),
+    name: "Sajana",
     role: "Computer Course Student",
   },
   {
-    text: "The small batch sizes ensure individual attention. Every doubt gets cleared immediately.",
-    image: "https://randomuser.me/api/portraits/men/9.jpg",
-    name: "Arjun Karki",
-    role: "High School Student",
+    text: "I had a great experience at Excel Institute. The instructors were knowledgeable and supportive, and the hands-on training helped me build confidence in graphic designing.",
+    image: testimonialPhoto(8, "jpeg"),
+    name: "Sanskar Shakya",
+    role: "Graphic Design Student",
+  },
+  {
+    text: "The computer class was very useful and informative. I learned many new things about basic computer skills, software, and the internet. The teaching style was clear and practical exercises helped me improve. Overall, a great experience.",
+    image: testimonialPhoto(9, "jpeg"),
+    name: "Nanu Crestha",
+    role: "Computer Course Student",
   },
 ];
 
